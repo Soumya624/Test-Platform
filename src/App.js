@@ -17,6 +17,7 @@ import {
 } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes,  Link } from "react-router-dom";
 import Home from "./Components/Home";
+import Test from "./Components/Test";
 function App() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -31,10 +32,11 @@ function App() {
     setShow(false);
   };
   return (
-    <div style={{ padding: "0% 10%", fontSize: "90%" }}>
+    <div>
       <Router>
         <Routes>
         <Route path="/" element={<Home/>} exact/>
+        <Route path="/test" element={<Test/>} />
         </Routes>
       </Router>
     </div>

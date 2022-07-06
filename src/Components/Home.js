@@ -30,7 +30,7 @@ function Home() {
     setShow(false);
   };
   return (
-    <div>
+    <div style={{ padding: "0% 10%", fontSize: "90%" }}>
       <Card style={{ boxShadow: "0 8px 6px -6px black", border: "none" }}>
         <Navbar
           bg="white"
