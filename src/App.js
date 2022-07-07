@@ -20,6 +20,8 @@ import Home from "./Components/Home";
 import Test from "./Components/Test";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
+import Teacher from "./Components/Teacher";
+import Student from "./Components/Student";
 function App() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -41,6 +43,8 @@ function App() {
         <Route path="/test" element={<Test/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
+        <Route path="/teacher" element={<Teacher/>} />
+        <Route path="/student" element={<Student/>} />
         </Routes>
       </Router>
     </div>
