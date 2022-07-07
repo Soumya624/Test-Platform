@@ -49,13 +49,13 @@ function Home() {
                 navbarScroll
               ></Nav>
               <Form className="d-flex">
-                <Nav.Link href="#about">About</Nav.Link>
-                <Nav.Link href="#">Contact Us</Nav.Link>
+                {/* <Nav.Link href="#about">About</Nav.Link>
+                <Nav.Link href="#">Contact Us</Nav.Link> */}
                 <Button
                   variant="primary"
                   style={{ borderRadius: "20px" }}
                   onClick={() => {
-                    handleShow();
+                    window.location.href = "/login";
                   }}
                 >
                   Login Now
@@ -65,18 +65,6 @@ function Home() {
           </Container>
         </Navbar>
         <Carousel>
-          <Carousel.Item>
-            <img
-              className="d-block w-100"
-              src="https://www.prismcolleges.com/images/2020-result.jpg"
-              alt="First slide"
-            />
-            <Carousel.Caption>
-              {/* <Button variant="primary" style={{ borderRadius: "20px" }}>
-                View Details
-              </Button> */}
-            </Carousel.Caption>
-          </Carousel.Item>
           <Carousel.Item>
             <img
               className="d-block w-100"
@@ -119,18 +107,6 @@ function Home() {
         <Row style={{ padding: "5%" }}>
           <Col md={6} style={{ padding: "1%" }}>
             <Carousel>
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  src="https://www.prismcolleges.com/images/2020-result.jpg"
-                  alt="First slide"
-                />
-                <Carousel.Caption>
-                  {/* <Button variant="primary" style={{ borderRadius: "20px" }}>
-                View Details
-              </Button> */}
-                </Carousel.Caption>
-              </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="d-block w-100"
