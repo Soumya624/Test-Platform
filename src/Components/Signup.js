@@ -109,7 +109,6 @@ function Login() {
                   type="submit"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
                   onClick={() => {prompt("Enter the OTP")}}
-                  onClick={(e) => {console.log(e.target.value)}}
                 >
                   Submit
                 </Button>
