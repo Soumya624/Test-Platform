@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Navbar,
@@ -28,6 +28,18 @@ export default function () {
   var identity = "Student";
   var email = "adamsmith@gmail.com";
   var phone = "1234567890";
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    setShow(true);
+    setShow1(false);
+  };
+  const [show1, setShow1] = useState(false);
+  const handleClose1 = () => setShow1(false);
+  const handleShow1 = () => {
+    setShow1(true);
+    setShow(false);
+  };
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
       <Navbar
@@ -77,7 +89,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
-                    href="/answer"
+                    onClick={handleShow}
                   >
                     Give Test
                   </Button>
@@ -97,7 +109,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
-                    href="/answer"
+                    onClick={handleShow}
                   >
                     Give Test
                   </Button>
@@ -117,7 +129,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
-                    href="/answer"
+                    onClick={handleShow}
                   >
                     Give Test
                   </Button>
@@ -140,7 +152,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
-                    href="/answer"
+                    onClick={handleShow}
                   >
                     Give Test
                   </Button>
@@ -160,7 +172,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
-                    href="/answer"
+                    onClick={handleShow}
                   >
                     Give Test
                   </Button>
@@ -180,7 +192,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
-                    href="/answer"
+                    onClick={handleShow}
                   >
                     Give Test
                   </Button>
@@ -234,6 +246,41 @@ export default function () {
           </center>
         </Col>
       </Row>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body style={{ padding: "5%" }}>
+          <center>
+            <h3>{subject}</h3>
+            <p>{description}</p>
+          </center>
+          <br />
+          <p>
+            <b>Instructions</b>
+          </p>
+          <p style={{ margin: "0" }}>
+            1. The examination will comprise of objective type questions
+          </p>
+          <p style={{ margin: "0" }}>
+            2. All questions are compulsory and each carries One mark
+          </p>
+          <p style={{ margin: "0" }}>
+            3. You will be given 15 minutes to complete the examination
+          </p>
+          <p style={{ margin: "0" }}>
+            4. You will be given a notification when the time is up
+          </p>
+          <br />
+          <br />
+          <center>
+            <Button
+              variant="outline-primary"
+              style={{ borderRadius: "20px" }}
+              href="/answer"
+            >
+              Start Exam
+            </Button>
+          </center>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
