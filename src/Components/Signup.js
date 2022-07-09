@@ -30,7 +30,7 @@ function Login() {
         style={{
           boxShadow: "0 8px 6px -6px black",
           border: "none",
-          padding: "4%",
+          padding: "2%",
           height: "50rem",
           alignItems: "center",
           justifyContent: "center",
