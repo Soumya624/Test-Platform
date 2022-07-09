@@ -19,12 +19,13 @@ import {
 import { Link } from "react-router-dom";
 import Img_Demo from "./Images/Registration.jpg";
 export default function () {
-  var type = "Single";
+  var type = "Single Correct";
   var positive = 3;
   var negative = 2;
   var arrayofQuestionnumber = ["01"];
   var arrayOne = ["HTML", "CSS", "JavaScript"];
   var arrayTwo = ["HTML", "CSS", "JavaScript"];
+  var arrayThree = ["True", "False"];
   var numberofUnanswered = 0;
   var numberofAnswered = 0;
   var numberofUnattempted = 0;
@@ -66,7 +67,7 @@ export default function () {
           <Form
             style={{
               margin: "2%",
-              display: type === "Single" ? "block" : "none",
+              display: type === "Single Correct" ? "block" : "none",
             }}
           >
             {arrayOne.map((item, index) => {
@@ -86,7 +87,7 @@ export default function () {
           <Form
             style={{
               margin: "2%",
-              display: type === "Multiple" ? "block" : "none",
+              display: type === "Multiple Correct" ? "block" : "none",
             }}
           >
             {arrayTwo.map((item, index) => {
@@ -106,7 +107,7 @@ export default function () {
           <Form
             style={{
               margin: "2%",
-              display: type === "Text" ? "block" : "none",
+              display: type === "Fill in The Blank" ? "block" : "none",
             }}
           >
             <input
@@ -121,6 +122,26 @@ export default function () {
                 padding: "1%",
               }}
             />
+          </Form>
+          <Form
+            style={{
+              margin: "2%",
+              display: type === "True/False" ? "block" : "none",
+            }}
+          >
+            {arrayThree.map((item, index) => {
+              return (
+                <div>
+                  <input
+                    type="radio"
+                    id={item}
+                    name="fav_language"
+                    value={item}
+                  />
+                  <label for={item}>&nbsp;{item}</label>
+                </div>
+              );
+            })}
           </Form>
           <br />
           <Row
