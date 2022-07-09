@@ -38,7 +38,7 @@ function Home() {
           style={{ backgroundColor: "white", padding: "1% 2%" }}
         >
           <Container fluid style={{ backgroundColor: "white" }}>
-            <Navbar.Brand href="#">&nbsp;&nbsp; Test_Platform</Navbar.Brand>
+            <Navbar.Brand href="#">Test_Platform</Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
               <Nav

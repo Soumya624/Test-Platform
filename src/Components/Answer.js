@@ -14,12 +14,15 @@ import {
   Row,
   Col,
   Modal,
+  ButtonGroup,
 } from "react-bootstrap";
-
-function Login() {
+import { Link } from "react-router-dom";
+import Img_Demo from "./Images/Registration.jpg";
+export default function () {
   var type = "Single";
   var positive = 3;
   var negative = 2;
+  var arrayofQuestionnumber = ["01"];
   var arrayOne = ["HTML", "CSS", "JavaScript"];
   var arrayTwo = ["HTML", "CSS", "JavaScript"];
   var numberofUnanswered = 0;
@@ -30,32 +33,33 @@ function Login() {
   var question =
     "A horizontal force F is applied at the centre of mass of a cylindrical object of mass m and radius R, perpendicular to its axis as shown in the figure. The coefficient of friction between the object and the ground is. The centre of mass of the object has an acceleration a. The acceleration due to gravity is g. Given that the object rolls without slipping, which of the following statement(s) is(are) correct?";
   return (
-    <Card
-      style={{
-        border: "none",
-        height: "60vw",
-      }}
-    >
-      <Row>
-        <Col xs={9} style={{ height: "60vw" }}>
-          <Row
-            style={{
-              padding: "1%",
-              backgroundColor: "#f5f5f5",
-              alignItems: "center",
-              alignContent: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Col xs={6} style={{ textAlign: "left" }}>
-              <p>Select {type} Correct Answer</p>
-            </Col>
-            <Col xs={6} style={{ textAlign: "right" }}>
-              <p>
-                +{positive} For Right Answer/-{negative} For Wrong Answer
-              </p>
-            </Col>
-          </Row>
+    <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
+      <Navbar
+        bg="#f5f5f5"
+        expand="lg"
+        style={{ backgroundColor: "#f5f5f5", padding: "1% 2%" }}
+      >
+        <Container fluid style={{ backgroundColor: "#f5f5f5" }}>
+          <Navbar.Brand href="#">Select {type} Correct Answer</Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{
+                maxHeight: "100px",
+              }}
+              navbarScroll
+            ></Nav>
+            <Form className="d-flex">
+              {/* <Nav.Link href="#about">About</Nav.Link>
+                <Nav.Link href="#">Contact Us</Nav.Link> */}
+              +{positive} For Right Answer/-{negative} For Wrong Answer
+            </Form>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Row style={{ padding: "0%", height: "50rem" }}>
+        <Col md={9} style={{ padding: "4%" }}>
           <br />
           <p style={{ margin: "2%" }}>{question}</p>
           <br />
@@ -119,14 +123,84 @@ function Login() {
             />
           </Form>
           <br />
+          <Row
+            style={{
+              width: "100%",
+              margin: "0",
+              display: window.innerWidth < 768 ? "" : "none",
+            }}
+          >
+            <Row style={{margin:"0.5%"}}>
+              <Col xs={6}>
+                <Button
+                  style={{
+                    backgroundColor: "#68b45a",
+                    color: "white",
+                    border: "none",
+                    margin: "0.5% 0.5% 0.5% 1%",
+                    fontSize: "100%",
+                    width:"100%"
+                  }}
+                >
+                  Save & Next
+                </Button>
+              </Col>
+              <Col xs={6}>
+                <Button
+                  style={{
+                    backgroundColor: "#7b449e",
+                    color: "white",
+                    border: "none",
+                    margin: "0.5%",
+                    fontSize: "100%",
+                    width:"100%"
+                  }}
+                >
+                  Mark for Review & Next
+                </Button>
+              </Col>
+            </Row>
+            <Row  style={{margin:"0.5%"}}>
+              <Col xs={6}>
+                <Button
+                  style={{
+                    backgroundColor: "#ffffff",
+                    color: "black",
+                    borderColor: "black",
+                    margin: "0.5%",
+                    fontSize: "100%",
+                    width:"100%"
+                  }}
+                >
+                  Clear Response
+                </Button>
+              </Col>
+              <Col xs={6}>
+                <Button
+                  style={{
+                    backgroundColor: "#68b45a",
+                    color: "white",
+                    border: "none",
+                    margin: "0.5% 1% 0.5% 0.5%",
+                    fontSize: "100%",
+                    width:"100%"
+                  }}
+                >
+                  Submit & Close
+                </Button>
+              </Col>
+            </Row>
+          </Row>
         </Col>
         <Col
-          xs={3}
-          style={{ backgroundColor: "#f5f5f5", padding: "2%", height: "60vw" }}
+          md={3}
+          style={{
+            backgroundColor: "#f5f5f5",
+            padding: "2%",
+          }}
         >
-          <br />
-          <Row>
-            <Row style={{ padding: "1%" }}>
+          <Row style={{ padding: "4%" }}>
+            <Row style={{ padding: "2%" }}>
               <Col xs={6}>
                 <Button
                   style={{
@@ -138,7 +212,7 @@ function Login() {
                 >
                   {numberofUnattempted}
                 </Button>{" "}
-                Not Attempted
+                Not Attempt
               </Col>
               <Col xs={6}>
                 <Button
@@ -150,10 +224,10 @@ function Login() {
                 >
                   {numberofUnanswered}
                 </Button>{" "}
-                Not Answered
+                Not Answer
               </Col>
             </Row>
-            <Row style={{ padding: "1%" }}>
+            <Row style={{ padding: "2%" }}>
               <Col xs={6}>
                 <Button
                   style={{
@@ -182,25 +256,75 @@ function Login() {
           </Row>
           <br />
           <br />
-          <Row>
-            <p>Your Questions</p>
-            {arrayofQuestionnumber.map((item, index) => {
-              return (
-                <div>
-                  <Button
-                    style={{
-                      borderRadius: "50%",
-                      backgroundColor: "white",
-                      borderColor: "black",
-                      color: "black",
-                    }}
-                  >
-                    {item}
-                  </Button>{" "}
-                </div>
-              );
-            })}
-          </Row>
+          <center>
+            <p>
+              <b>Your Questions</b>
+            </p>
+            <Row>
+              <Col xs={1}></Col>
+              <Col xs={2}>
+                <Button
+                  style={{
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                    borderColor: "black",
+                    color: "black",
+                  }}
+                >
+                  01
+                </Button>{" "}
+              </Col>
+              <Col xs={2}>
+                <Button
+                  style={{
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                    borderColor: "black",
+                    color: "black",
+                  }}
+                >
+                  02
+                </Button>{" "}
+              </Col>
+              <Col xs={2}>
+                <Button
+                  style={{
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                    borderColor: "black",
+                    color: "black",
+                  }}
+                >
+                  03
+                </Button>{" "}
+              </Col>
+              <Col xs={2}>
+                <Button
+                  style={{
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                    borderColor: "black",
+                    color: "black",
+                  }}
+                >
+                  04
+                </Button>{" "}
+              </Col>
+              <Col xs={2}>
+                <Button
+                  style={{
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                    borderColor: "black",
+                    color: "black",
+                  }}
+                >
+                  05
+                </Button>{" "}
+              </Col>
+              <Col xs={1}></Col>
+            </Row>
+          </center>
         </Col>
       </Row>
       <Row
@@ -210,6 +334,7 @@ function Login() {
           bottom: "0",
           width: "100%",
           margin: "0",
+          display: window.innerWidth > 768 ? "" : "none",
         }}
       >
         <Col xs={8}>
@@ -220,6 +345,7 @@ function Login() {
                 color: "white",
                 border: "none",
                 margin: "0.5% 0.5% 0.5% 1%",
+                fontSize: "100%",
               }}
             >
               Save & Next
@@ -230,6 +356,7 @@ function Login() {
                 color: "white",
                 border: "none",
                 margin: "0.5%",
+                fontSize: "100%",
               }}
             >
               Mark for Review & Next
@@ -240,6 +367,7 @@ function Login() {
                 color: "black",
                 borderColor: "black",
                 margin: "0.5%",
+                fontSize: "100%",
               }}
             >
               Clear Response
@@ -253,14 +381,13 @@ function Login() {
               color: "white",
               border: "none",
               margin: "0.5% 1% 0.5% 0.5%",
+              fontSize: "100%",
             }}
           >
             Submit & Close
           </Button>
         </Col>
       </Row>
-    </Card>
+    </div>
   );
 }
-
-export default Login;

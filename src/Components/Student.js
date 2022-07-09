@@ -36,7 +36,7 @@ export default function () {
         style={{ backgroundColor: "#f5f5f5", padding: "1% 2%" }}
       >
         <Container fluid style={{ backgroundColor: "#f5f5f5" }}>
-          <Navbar.Brand href="#">&nbsp;&nbsp; Hello User</Navbar.Brand>
+          <Navbar.Brand href="#">Hello User</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -77,6 +77,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
+                    href="/answer"
                   >
                     Give Test
                   </Button>
@@ -96,6 +97,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
+                    href="/answer"
                   >
                     Give Test
                   </Button>
@@ -115,6 +117,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
+                    href="/answer"
                   >
                     Give Test
                   </Button>
@@ -137,6 +140,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
+                    href="/answer"
                   >
                     Give Test
                   </Button>
@@ -156,6 +160,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
+                    href="/answer"
                   >
                     Give Test
                   </Button>
@@ -175,6 +180,7 @@ export default function () {
                   <Button
                     variant="outline-primary"
                     style={{ borderRadius: "20px" }}
+                    href="/answer"
                   >
                     Give Test
                   </Button>
