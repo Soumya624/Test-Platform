@@ -234,7 +234,7 @@ export default function () {
             <Button
               variant="outline-primary"
               style={{ borderRadius: "20px" }}
-              href="/question"
+              onClick={handleShow1}
             >
               Ctrate New
             </Button>
@@ -304,11 +304,55 @@ export default function () {
           <p style={{ margin: "0" }}>
             4. You will be given a notification when the time is up
           </p>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <center>
-            <Button variant="outline-primary" style={{ borderRadius: "20px" }} href="/question">
+            <Button
+              variant="outline-primary"
+              style={{ borderRadius: "20px" }}
+              href="/question"
+            >
               Edit Exam
+            </Button>
+          </center>
+        </Modal.Body>
+      </Modal>
+      <Modal show={show1} onHide={handleClose1}>
+        <Modal.Body style={{ padding: "5%" }}>
+          <center>
+            <p>
+              <b>Please Fill the Exam Details</b>
+            </p>
+          </center>
+          <br />
+          <Form.Group className="mb-3" controlId="formBasicSingle">
+            <Form.Label>Enter Subject</Form.Label>
+            <Form.Control
+              type="text"
+              onChange={(e) => console.log(e.target.value)}
+            />
+            <br />
+            <Form.Label>Enter Topic</Form.Label>
+            <Form.Control
+              type="text"
+              onChange={(e) => console.log(e.target.value)}
+            />
+            <br />
+            <Form.Label>Specify Instructions</Form.Label>
+            <Form.Control
+              type="text"
+              onChange={(e) => console.log(e.target.value)}
+              style={{ height: "5rem" }}
+            />
+          </Form.Group>
+          <br />
+          <center>
+            <Button
+              variant="outline-primary"
+              style={{ borderRadius: "20px" }}
+              href="/question"
+            >
+              Create Test
             </Button>
           </center>
         </Modal.Body>
