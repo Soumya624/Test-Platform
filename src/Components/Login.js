@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Navbar,
@@ -17,6 +17,18 @@ import {
 } from "react-bootstrap";
 import Img_Registration from "./Images/Registration.png";
 function Login() {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    setShow(true);
+    setShow1(false);
+  };
+  const [show1, setShow1] = useState(false);
+  const handleClose1 = () => setShow1(false);
+  const handleShow1 = () => {
+    setShow1(true);
+    setShow(false);
+  };
   return (
     <div
       style={{
@@ -51,7 +63,9 @@ function Login() {
                   type="email"
                   placeholder="Enter Your Email ID"
                   style={{ borderRadius: "20px" }}
-                  onChange={(e) => {console.log(e.target.value)}}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                  }}
                 />
               </Form.Group>
               <br />
@@ -60,7 +74,9 @@ function Login() {
                   type="password"
                   placeholder="Enter Password"
                   style={{ borderRadius: "20px" }}
-                  onChange={(e) => {console.log(e.target.value)}}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                  }}
                 />
               </Form.Group>
               <br />
@@ -72,7 +88,7 @@ function Login() {
                 <Button
                   variant="outline-primary"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-                  onClick={(e) => {console.log(e.target.value); window.location.href = "/teacher"}}
+                  onClick={handleShow}
                 >
                   Submit
                 </Button>
@@ -94,6 +110,45 @@ function Login() {
           </Col>
         </Row>
       </Card>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>
+          <center>
+            {" "}
+            <p>
+              <b>OTP Verification</b>
+            </p>
+          </center>
+
+          <br />
+          <Form.Group controlId="formBasicEmail">
+            <Form.Control
+              type="email"
+              placeholder="Enter the OTP"
+              style={{ borderRadius: "20px" }}
+              onChange={(e) => {
+                console.log(e.target.value);
+              }}
+            />
+          </Form.Group>
+          <br />
+          <center>
+            <Button
+              variant="outline-primary"
+              style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
+              href="/teacher"
+            >
+              Submit
+            </Button>
+            <Button
+              variant="outline-primary"
+              style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+          </center>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

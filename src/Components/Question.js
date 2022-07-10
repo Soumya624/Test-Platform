@@ -18,11 +18,38 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Img_Demo from "./Images/Registration.jpg";
+const Input1 = () => {
+  return (
+    <Row
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: "2%",
+      }}
+    >
+      <Col xs={6}>
+        <Form.Control
+          type="text"
+          placeholder="Enter the Option"
+          style={{ width: "100%" }}
+        />
+      </Col>
+      <Col xs={6}>
+        <Form.Check
+          type="checkbox"
+          label="Is Correct"
+          style={{ margin: "1%" }}
+        />
+      </Col>
+    </Row>
+  );
+};
 export default function () {
   const [flag1, setFlag1] = useState(false);
   const [flag2, setFlag2] = useState(false);
   const [flag3, setFlag3] = useState(false);
   const [flag4, setFlag4] = useState(false);
+  const [flag5, setFlag5] = useState(false);
   var name = "Adam";
   var subject = "Physics";
   var description =
@@ -34,6 +61,11 @@ export default function () {
   var phone = "1234567890";
   var arrayofQuestionnumber = ["01"];
   var typeofquestion = "";
+  const [inputList, setInputList] = useState([]);
+
+  const onAddBtnClick = (event) => {
+    setInputList(inputList.concat(<Input1 key={inputList.length} />));
+  };
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
       <Navbar
@@ -122,7 +154,16 @@ export default function () {
               controlId="formBasicTF"
               style={{ display: flag4 ? "block" : "none" }}
             >
-              <Form.Label>Enter the Correct Answer</Form.Label>
+              <div>
+                <Button
+                  variant="outline-primary"
+                  style={{ margin: "0%" }}
+                  onClick={onAddBtnClick}
+                >
+                  Add Option
+                </Button>
+                {inputList}
+              </div>
               <Form.Control type="email" />
             </Form.Group>
             <Form.Group
@@ -138,77 +179,36 @@ export default function () {
               controlId="formBasicSingle"
               style={{ display: flag1 ? "block" : "none" }}
             >
-              <Form.Label>Enter the Correct Answer</Form.Label>
-              <Form.Control type="email" />
-              <br />
-              <Form.Label for="optionS">
-                Specify the Number of Options
-              </Form.Label>
-              <select
-                id="optionS"
-                name="optionS"
-                style={{
-                  margin: "1%",
-                  border: "none",
-                  borderBottom: "1px solid #d4d9df",
-                }}
-                onChange={(e) => {
-                  console.log(e.target.value);
-                }}
-              >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-              <br />
-              <br />
-              <Form.Label>
-                Enter the Incorrect Answers (Separated by Comma)
-              </Form.Label>
-              <Form.Control type="email" />
+              <div>
+                <Button
+                  variant="outline-primary"
+                  style={{ margin: "0%" }}
+                  onClick={onAddBtnClick}
+                >
+                  Add Option
+                </Button>
+                {inputList}
+              </div>
             </Form.Group>
             <Form.Group
               className="mb-3"
               controlId="formBasicMultiple"
               style={{ display: flag2 ? "block" : "none" }}
             >
-              <Form.Label>
-                Enter the Correct Answers (Separated by Comma)
-              </Form.Label>
-              <Form.Control type="email" />
-              <br />
-              <Form.Label for="optionS">
-                Specify the Number of Options
-              </Form.Label>
-              <select
-                id="optionS"
-                name="optionS"
-                style={{
-                  margin: "1%",
-                  border: "none",
-                  borderBottom: "1px solid #d4d9df",
-                }}
-                onChange={(e) => {
-                  console.log(e.target.value);
-                }}
-              >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-              <br />
-              <br />
-              <Form.Label>
-                Enter the Incorrect Answers (Separated by Comma)
-              </Form.Label>
-              <Form.Control type="email" />
+              <div>
+                <Button
+                  variant="outline-primary"
+                  style={{ margin: "0%" }}
+                  onClick={onAddBtnClick}
+                >
+                  Add Option
+                </Button>
+                {inputList}
+              </div>
             </Form.Group>
           </Form>
           <center>
+            <br />
             <br />
             <Button
               variant="outline-primary"
