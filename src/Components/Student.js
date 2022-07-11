@@ -21,8 +21,7 @@ import Img_Demo from "./Images/Registration.jpg";
 export default function () {
   var name = "Adam";
   var subject = "Physics";
-  var description =
-    "Objective Questions on Motion in a Frame of Reference of a Particular Body";
+  var description = "2022-04-13 10:00 AM to 2022-04-14 10:00 AM";
   var time = "2 Days Ago";
   var name = "Adam Smith";
   var identity = "Student";

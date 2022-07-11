@@ -61,7 +61,7 @@ function Login() {
                   <Form.Group controlId="formBasicEmail">
                     <Form.Control
                       type="name"
-                      placeholder="Enter your username"
+                      placeholder="Enter your Username"
                       style={{ borderRadius: "20px" }}
                       onChange={(e) => {
                         console.log(e.target.value);
