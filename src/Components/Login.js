@@ -58,10 +58,21 @@ function Login() {
           </Col>
           <Col md="6">
             <Form>
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Control
+                      type="name"
+                      placeholder="Enter your username"
+                      style={{ borderRadius: "20px" }}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <br />
               <Form.Group controlId="formBasicEmail">
                 <Form.Control
                   type="email"
-                  placeholder="Enter Your Email ID"
+                  placeholder="Enter your Email ID"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
                     console.log(e.target.value);
