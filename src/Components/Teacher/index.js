@@ -230,7 +230,6 @@ export default function () {
 						<Form.Label>Specify Instructions</Form.Label>
 						<Form.Control
 							type="text"
-							required = {true}
 							onChange={(e) => {
 								submitData.instruction = e.target.value
 								setSubmitData(submitData)
