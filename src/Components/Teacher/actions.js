@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADD_TEST } from "./types";
+import { ADD_QUESTION, ADD_TEST, GET_TEST, GET_TESTS } from "./types";
 
 const headers = {
     Authorization:
@@ -27,6 +27,12 @@ export const getTestById = (id,callback) =>{
             headers : headers
         })
         .then((res)=>{
+            if(res.status === 200){
+                dispatch({
+                    type : GET_TEST,
+                    payload : res.data
+                })
+            }
             callback(res)
         })
         .catch((e)=>{
@@ -84,6 +90,12 @@ export const addQuestion = (data, callback)=>{
             headers : headers
         })
         .then((res)=>{
+            if(res.status === 200){
+                dispatch({
+                    type : ADD_TEST,
+                    payload : res.data
+                })
+            }
             callback(res)
         })
         .catch((e)=>{

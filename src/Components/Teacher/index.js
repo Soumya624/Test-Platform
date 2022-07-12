@@ -64,7 +64,6 @@ export default function () {
   };
 
   const [isfixed, setIsFixed] = useState(false)
-  const [ test_id, setTestId ] = useState(null)
 
   function createTest() {
     console.log(submitData)

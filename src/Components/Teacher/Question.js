@@ -19,9 +19,13 @@ import {
 } from "react-bootstrap";
 import { addQuestion, getTestById } from "./actions";
 import { Link, useParams } from "react-router-dom";
-import Img_Demo from "../Images/Registration.jpg";
-const Input_Option = ({setOptionIsCorrect, setOptionName,option_name, inputList, setOptionId }) => {
-
+const Input_Option = ({
+	setOptionIsCorrect,
+	setOptionName,
+	option_name,
+	inputList,
+	setOptionId,
+}) => {
 	return (
 		<Row
 			style={{
@@ -33,17 +37,16 @@ const Input_Option = ({setOptionIsCorrect, setOptionName,option_name, inputList,
 			<Col xs={6}>
 				<Form.Control
 					type="text"
-          value = {option_name}
+					value={option_name}
 					placeholder="Enter the Option"
 					style={{ width: "100%" }}
-          onClick = {e=>{
-            setOptionId(inputList.length)
-            setOptionName(e.target.value)
-          }}
-          onChange ={e=>{
-            // option.name = e.target.value
-            setOptionName(e.target.value)
-          }}
+					onClick={(e) => {
+						setOptionId(inputList.length);
+						setOptionName(e.target.value);
+					}}
+					onChange={(e) => {
+						setOptionName(e.target.value);
+					}}
 				/>
 			</Col>
 			<Col xs={6}>
@@ -51,9 +54,9 @@ const Input_Option = ({setOptionIsCorrect, setOptionName,option_name, inputList,
 					type="checkbox"
 					label="Is Correct"
 					style={{ margin: "1%" }}
-          onChange = {e=>{
-            setOptionIsCorrect(e.target.checked)
-          }}
+					onChange={(e) => {
+						setOptionIsCorrect(e.target.checked);
+					}}
 				/>
 			</Col>
 		</Row>
@@ -61,7 +64,6 @@ const Input_Option = ({setOptionIsCorrect, setOptionName,option_name, inputList,
 };
 
 var question_data = {
-	name: null,
 	positive_marks: 0,
 	negative_marks: 0,
 	is_range_present: false,
@@ -70,42 +72,56 @@ var question_data = {
 };
 
 var option_data = {
-  name : null,
-  is_correct : false
-}
+	name: null,
+	is_correct: false,
+};
 
 export default function () {
 	const dispatch = useDispatch();
 	const { id } = useParams();
 
+	const test = useSelector((state) => state.tests.test)
+
 	const [question, setQuestion] = useState(question_data);
-  const [ option_name, setOptionName ] = useState(null)
-  const [ option_ischecked, setOptionIsCorrect ] = useState(false)
-  const [ option_list, setOptionList ] = useState([])
-  const [option_id,setOptionId] = useState(null)
+	const [question_name, setQuestionName] = useState("")
+	const [option_name, setOptionName] = useState(null);
+	const [option_ischecked, setOptionIsCorrect] = useState(false);
+	const [option_list, setOptionList] = useState([]);
+	const [option_id, setOptionId] = useState(null);
+	const [ isLoading, setLoading ] = useState(false)
 
-  const [ question_numbers, setQuestionNumber ] = useState([])
-
-  useEffect(()=>{
-    dispatch(
-      getTestById(id,(res)=>{
-        if(res.status === 200)
-          setQuestionNumber(res.data.questions)
-      })
-    )
-  },[])
+	useEffect(() => {
+		setLoading(true)
+		dispatch(
+			getTestById(id, (res) => {
+				if (res.status === 200){
+					setLoading(false)
+				}
+			}),
+		);
+	}, []);
 
 	function createQuestion() {
-    const data = {
-      test : id,
-      ...question,
-      options : option_list
-    }
+		const data = {
+			test: id,
+			...question,
+			name : question_name,
+			options: option_list,
+		};
 
-    dispatch(addQuestion(data,(res)=>{
-      console.log(res)
-    }))
-  }
+		dispatch(
+			addQuestion(data, (res) => {
+				console.log(res)
+				if(res.status === 200){
+					setInputList([])
+					setOptionList([])
+					setQuestionName("")
+					setOptionName(null)
+					setQuestion(question_data)
+				}
+			}),
+		);
+	}
 
 	const [flag1, setFlag1] = useState(false);
 	const [flag2, setFlag2] = useState(false);
@@ -114,27 +130,42 @@ export default function () {
 	var typeofquestion = "";
 	const [inputList, setInputList] = useState([]);
 	const onAddBtnClick = (event) => {
-    if(!option_name)
-		{
-      setInputList(inputList.concat(<Input_Option setOptionId={setOptionId} inputList = {inputList} option_name={option_name} setOptionName={setOptionName} setOptionIsCorrect = {setOptionIsCorrect} key={inputList.length} />));
-    }
+		if (!option_name) {
+			setInputList(
+				inputList.concat(
+					<Input_Option
+						setOptionId={setOptionId}
+						inputList={inputList}
+						option_name={option_name}
+						setOptionName={setOptionName}
+						setOptionIsCorrect={setOptionIsCorrect}
+						key={inputList.length}
+					/>,
+				),
+			);
+		}
 	};
 
-  const saveOption = (e)=>{
-    const list = {
-      name : option_name,
-      is_correct : option_ischecked
-    }
-    if(option_list[option_id] !== undefined){
-      option_list[option_id].name = option_name
-      setOptionList(option_list)
-      setOptionName(null)
-    }
-    else if(option_name){
-      setOptionList(option_list.concat(list))
-      setOptionName(null)
-    }
-  }
+	const saveOption = (e) => {
+		const list = {
+			name: option_name,
+			is_correct: option_ischecked,
+		};
+		if (option_list[option_id] !== undefined) {
+			option_list[option_id].name = option_name;
+			setOptionList(option_list);
+			setOptionName(null);
+		} else if (option_name) {
+			setOptionList(option_list.concat(list));
+			setOptionName(null);
+		}
+	};
+
+	console.log(question.name)
+
+	if(isLoading){
+		return <h1 style={{color:"white"}}>Loading...</h1>
+	}
 
 	return (
 		<div style={{ backgroundColor: "white", overflowX: "hidden" }}>
@@ -174,12 +205,13 @@ export default function () {
 						<Form.Group className="mb-3" controlId="formBasicQuestion">
 							<Form.Label>Enter Your Question</Form.Label>
 							<Form.Control
+								value = {question.name ? question.name : ""}
 								type="test"
 								autoComplete="off"
 								style={{ height: "5rem" }}
 								onChange={(e) => {
-									question.name = e.target.value;
-									setQuestion(question);
+									// question.name = e.target.value;
+									setQuestion({...question, name : e.target.value});
 								}}
 							/>
 						</Form.Group>
@@ -240,11 +272,9 @@ export default function () {
 								</Button>
 								{inputList}
 							</div>
-              <div>
-                <Button>
-                  Save
-                </Button>
-              </div>
+							<div>
+								<Button>Save</Button>
+							</div>
 							<Form.Control type="email" />
 						</Form.Group>
 						<Form.Group
@@ -270,11 +300,9 @@ export default function () {
 								</Button>
 								{inputList}
 							</div>
-              <div>
-                <Button>
-                  Save
-                </Button>
-              </div>
+							<div>
+								<Button>Save</Button>
+							</div>
 						</Form.Group>
 						<Form.Group
 							className="mb-3"
@@ -289,9 +317,7 @@ export default function () {
 								>
 									Add Option
 								</Button>
-                <Button onClick={saveOption}>
-                  Save
-                </Button>
+								<Button onClick={saveOption}>Save</Button>
 								{inputList}
 							</div>
 						</Form.Group>
@@ -302,7 +328,7 @@ export default function () {
 						<Button
 							variant="outline-primary"
 							style={{ borderRadius: "20px", margin: "0.5%" }}
-              onClick={createQuestion}
+							onClick={createQuestion}
 						>
 							Create New
 						</Button>
@@ -324,25 +350,26 @@ export default function () {
 					<center>
 						<Row>
 							<Col xs={1}></Col>
-              <>
-              {
-                question_numbers.map(function(x,i){
-                  return <Col xs={2}>
-                  <Button
-                    style={{
-                      borderRadius: "50%",
-                      backgroundColor: "white",
-                      borderColor: "black",
-                      color: "black",
-                    }}
-                    href = {`/question/${id}/${x.id}/edit`}
-                  >
-                    {i+1}
-                  </Button>{" "}
-                </Col>
-                })
-              }</>
-							
+							<>
+								{test && test.questions.map(function (x, i) {
+									return (
+										<Col xs={2}>
+											<Button
+												style={{
+													borderRadius: "50%",
+													backgroundColor: "white",
+													borderColor: "black",
+													color: "black",
+												}}
+												href={`/question/${id}/${x.id}/edit`}
+											>
+												{i + 1}
+											</Button>{" "}
+										</Col>
+									);
+								})}
+							</>
+
 							<Col xs={1}></Col>
 						</Row>
 					</center>
