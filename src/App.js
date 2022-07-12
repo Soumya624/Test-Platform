@@ -21,7 +21,7 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import Teacher from "./Components/Teacher";
 import Student from "./Components/Student";
-import Questions from "./Components/Question";
+import Questions from "./Components/Teacher/Question";
 import Answer from "./Components/Answer";
 function App() {
   const [show, setShow] = useState(false);
@@ -45,7 +45,7 @@ function App() {
         <Route path="/signup" element={<Signup/>} />
         <Route path="/teacher" element={<Teacher/>} />
         <Route path="/student" element={<Student/>} />
-        <Route path="/question" element={<Questions/>} />
+        <Route path="/question/:id" element={<Questions/>} />
         <Route path="/answer" element={<Answer/>} />
         </Routes>
       </Router>
