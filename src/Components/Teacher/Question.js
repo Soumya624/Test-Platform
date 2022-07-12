@@ -16,10 +16,11 @@ import {
 	Col,
 	Modal,
 	ButtonGroup,
+	Alert,
 } from "react-bootstrap";
 import { addQuestion, getTestById } from "./actions";
 import { Link, useParams } from "react-router-dom";
-const Input_Option = ({
+const InputOption = ({
 	setOptionIsCorrect,
 	setOptionName,
 	option_name,
@@ -64,11 +65,11 @@ const Input_Option = ({
 };
 
 var question_data = {
-	positive_marks: 0,
-	negative_marks: 0,
+	positive_marks: null,
+	negative_marks: null,
 	is_range_present: false,
-	lowest_mark: 0,
-	highest_mark: 0,
+	lowest_mark: null,
+	highest_mark: null,
 };
 
 var option_data = {
@@ -80,44 +81,49 @@ export default function () {
 	const dispatch = useDispatch();
 	const { id } = useParams();
 
-	const test = useSelector((state) => state.tests.test)
+	const test = useSelector((state) => state.tests.test);
 
 	const [question, setQuestion] = useState(question_data);
-	const [question_name, setQuestionName] = useState("")
+	const [question_name, setQuestionName] = useState(null);
 	const [option_name, setOptionName] = useState(null);
 	const [option_ischecked, setOptionIsCorrect] = useState(false);
 	const [option_list, setOptionList] = useState([]);
 	const [option_id, setOptionId] = useState(null);
-	const [ isLoading, setLoading ] = useState(false)
+	const [isLoading, setLoading] = useState(false);
+
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		setLoading(true)
+		setLoading(true);
 		dispatch(
 			getTestById(id, (res) => {
-				if (res.status === 200){
-					setLoading(false)
+				if (res.status === 200) {
+					setLoading(false);
+				} else {
+					console.log(res);
 				}
 			}),
 		);
-	}, []);
+	}, [dispatch, id]);
 
 	function createQuestion() {
 		const data = {
 			test: id,
 			...question,
-			name : question_name,
+			name: question_name,
 			options: option_list,
 		};
 
 		dispatch(
 			addQuestion(data, (res) => {
-				console.log(res)
-				if(res.status === 200){
-					setInputList([])
-					setOptionList([])
-					setQuestionName("")
-					setOptionName(null)
-					setQuestion(question_data)
+				if (res.status === 200) {
+					setInputList([]);
+					setOptionList([]);
+					setQuestionName("");
+					setOptionName(null);
+					setQuestion(question_data);
+				} else {
+					setError(res.data);
 				}
 			}),
 		);
@@ -127,13 +133,14 @@ export default function () {
 	const [flag2, setFlag2] = useState(false);
 	const [flag3, setFlag3] = useState(false);
 	const [flag4, setFlag4] = useState(false);
+	const [show, setShow] = useState(true);
 	var typeofquestion = "";
 	const [inputList, setInputList] = useState([]);
 	const onAddBtnClick = (event) => {
 		if (!option_name) {
 			setInputList(
 				inputList.concat(
-					<Input_Option
+					<InputOption
 						setOptionId={setOptionId}
 						inputList={inputList}
 						option_name={option_name}
@@ -161,10 +168,8 @@ export default function () {
 		}
 	};
 
-	console.log(question.name)
-
-	if(isLoading){
-		return <h1 style={{color:"white"}}>Loading...</h1>
+	if (isLoading) {
+		return <h1 style={{ color: "white" }}>Loading...</h1>;
 	}
 
 	return (
@@ -199,19 +204,32 @@ export default function () {
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
+			{show && error && (
+				<Alert
+					style={{
+						textAlign: "center",
+						position: "absolute",
+						left: "50%",
+						transform:"translateX(-50%)",
+					}}
+					variant="danger"
+				>
+					<p>{error}</p>
+				</Alert>
+			)}
 			<Row style={{ padding: "0%", height: "50rem" }}>
 				<Col md={9} style={{ padding: "4%" }}>
 					<Form>
 						<Form.Group className="mb-3" controlId="formBasicQuestion">
 							<Form.Label>Enter Your Question</Form.Label>
 							<Form.Control
-								value = {question.name ? question.name : ""}
+								value={question.name ? question.name : ""}
 								type="test"
 								autoComplete="off"
 								style={{ height: "5rem" }}
 								onChange={(e) => {
 									// question.name = e.target.value;
-									setQuestion({...question, name : e.target.value});
+									setQuestion({ ...question, name: e.target.value });
 								}}
 							/>
 						</Form.Group>
@@ -351,23 +369,24 @@ export default function () {
 						<Row>
 							<Col xs={1}></Col>
 							<>
-								{test && test.questions.map(function (x, i) {
-									return (
-										<Col xs={2}>
-											<Button
-												style={{
-													borderRadius: "50%",
-													backgroundColor: "white",
-													borderColor: "black",
-													color: "black",
-												}}
-												href={`/question/${id}/${x.id}/edit`}
-											>
-												{i + 1}
-											</Button>{" "}
-										</Col>
-									);
-								})}
+								{test &&
+									test.questions.map(function (x, i) {
+										return (
+											<Col xs={2}>
+												<Button
+													style={{
+														borderRadius: "50%",
+														backgroundColor: "white",
+														borderColor: "black",
+														color: "black",
+													}}
+													href={`/question/${id}/${x.id}/edit`}
+												>
+													{i + 1 >= 1 && i + 1 <= 9 ? `0${i + 1}` : i + 1}
+												</Button>{" "}
+											</Col>
+										);
+									})}
 							</>
 
 							<Col xs={1}></Col>
