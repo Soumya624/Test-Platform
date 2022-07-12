@@ -23,6 +23,7 @@ import Teacher from "./Components/Teacher";
 import Student from "./Components/Student";
 import Questions from "./Components/Teacher/Question";
 import Answer from "./Components/Answer";
+import QuestionEdit from "./Components/Teacher/QuestionEdit";
 function App() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -47,6 +48,7 @@ function App() {
         <Route path="/student" element={<Student/>} />
         <Route path="/question/:id" element={<Questions/>} />
         <Route path="/answer" element={<Answer/>} />
+        <Route path="/question/:id/:id/edit" element={<QuestionEdit/>} />
         </Routes>
       </Router>
     </div>

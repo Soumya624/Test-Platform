@@ -73,7 +73,7 @@ export default function () {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Row style={{ padding: "0%" }}>
+      <Row style={{ padding: "0%", height:"50rem" }}>
         <Col md={9} style={{ padding: "2%" }}>
           <Row>
             <Col md={4}>

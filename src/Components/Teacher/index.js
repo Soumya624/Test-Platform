@@ -2,9 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  addTest
-} from './actions'
+import { addTest } from "./actions";
 
 import {
   Container,
@@ -39,8 +37,7 @@ var data = {
 };
 
 export default function () {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   var name = "Adam";
   var subject = "Physics";
@@ -63,20 +60,20 @@ export default function () {
     setShow(false);
   };
 
-  const [isfixed, setIsFixed] = useState(false)
+  const [isfixed, setIsFixed] = useState(false);
 
   function createTest() {
-    console.log(submitData)
+    console.log(submitData);
     dispatch(
-      addTest(submitData,(res)=>{
-        if(res.status === 201){
-          console.log(res)
-          window.location = `/question/${res.data.unique_id}`
-        }else{
-          console.log(res)
+      addTest(submitData, (res) => {
+        if (res.status === 201) {
+          console.log(res);
+          window.location = `/question/${res.data.unique_id}`;
+        } else {
+          console.log(res);
         }
       })
-    )
+    );
   }
 
   // Enter Subject
@@ -113,7 +110,7 @@ export default function () {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Row style={{ padding: "0%" }}>
+      <Row style={{ padding: "0%", height: "50rem" }}>
         <Col md={9} style={{ padding: "2%" }}>
           <Row>
             <TestCreated
@@ -243,22 +240,22 @@ export default function () {
               <Col xs={6}>
                 <Form.Label>Start Date</Form.Label>
                 <Form.Control
-                  disabled = {!isfixed}
+                  disabled={!isfixed}
                   type="datetime-local"
                   onChange={(e) => {
-                  	submitData.exam_start_time = e.target.value
-                  	setSubmitData(submitData)
+                    submitData.exam_start_time = e.target.value;
+                    setSubmitData(submitData);
                   }}
                 />
               </Col>
               <Col xs={6}>
                 <Form.Label>End Date</Form.Label>
                 <Form.Control
-                  disabled = {!isfixed}
+                  disabled={!isfixed}
                   type="datetime-local"
                   onChange={(e) => {
-                  	submitData.exam_start_time = e.target.value
-                  	setSubmitData(submitData)
+                    submitData.exam_start_time = e.target.value;
+                    setSubmitData(submitData);
                   }}
                 />
               </Col>
@@ -276,15 +273,31 @@ export default function () {
               style={{ height: "5rem" }}
             />
             <br />
-            <Form.Check type="checkbox" label="Show Results" onChange={e=>{
-              submitData.show_result = e.target.checked
-              setSubmitData(submitData)
-            }} />
-            <Form.Check type="checkbox" label="Fixed" onChange={e=>{
-              setIsFixed(e.target.checked)
-              submitData.isFixed = e.target.checked
-              setSubmitData(submitData)
-            }} />
+            <div>
+              <Row>
+                <Col xs={6}>
+                  <Form.Check
+                    type="checkbox"
+                    label="Show Results"
+                    onChange={(e) => {
+                      submitData.show_result = e.target.checked;
+                      setSubmitData(submitData);
+                    }}
+                  />
+                </Col>
+                <Col xs={6}>
+                  <Form.Check
+                    type="checkbox"
+                    label="Add Schedule"
+                    onChange={(e) => {
+                      setIsFixed(e.target.checked);
+                      submitData.isFixed = e.target.checked;
+                      setSubmitData(submitData);
+                    }}
+                  />
+                </Col>
+              </Row>
+            </div>
           </Form.Group>
           <br />
           <center>
