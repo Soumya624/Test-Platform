@@ -1,11 +1,18 @@
-import { ADD_QUESTION } from "./types";
+import { ADD_QUESTION, GET_QUESTION } from "./types";
 
 const initialState = {
-    questions : []
+    questions : [],
+    question : null,
 }
 
 export default function questionReducers (state = initialState, action){
+    console.log(action)
     switch(action.type){
+        case GET_QUESTION:
+            return {
+                ...state,
+                question : action.payload
+            }
         case ADD_QUESTION:
             return{
                 ...state,

@@ -23,10 +23,14 @@ import { Link, useParams } from "react-router-dom";
 const InputOption = ({
   setOptionIsCorrect,
   setOptionName,
+  optionVal,
   option_name,
   inputList,
   setOptionId,
+  option_list,
+  setOptionList
 }) => {
+  const[ option_val, setOptionVal ] = useState(optionVal)
   return (
     <Row
       style={{
@@ -38,7 +42,7 @@ const InputOption = ({
       <Col xs={6}>
         <Form.Control
           type="text"
-          value={option_name}
+          value={option_val}
           placeholder="Enter the Option"
           style={{ width: "100%" }}
           onClick={(e) => {
@@ -46,6 +50,8 @@ const InputOption = ({
             setOptionName(e.target.value);
           }}
           onChange={(e) => {
+            option_list[option_list.length-1].name = e.target.value
+            setOptionVal(e.target.value)
             setOptionName(e.target.value);
           }}
         />
@@ -56,6 +62,7 @@ const InputOption = ({
           label="Is Correct"
           style={{ margin: "1%" }}
           onChange={(e) => {
+            option_list[option_list.length-1].is_correct = e.target.checked
             setOptionIsCorrect(e.target.checked);
           }}
         />
@@ -81,6 +88,7 @@ export default function () {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+
   const test = useSelector((state) => state.tests.test);
 
   const [question, setQuestion] = useState(question_data);
@@ -91,10 +99,12 @@ export default function () {
   const [option_id, setOptionId] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
-  const [error, setError] = useState(null);
+  const [positive_marks, setQuestionPositiveMarks] = useState(0)
+  const [negative_marks, setQuestionNegativeMarks] = useState(0)
 
+  const [msg, setMsg] = useState(null);
+  const [success, setSuccess] = useState(false)
   useEffect(() => {
-	alert("Please Click on The Save Button After Adding an Option");
     setLoading(true);
     dispatch(
       getTestById(id, (res) => {
@@ -111,9 +121,11 @@ export default function () {
     const data = {
       test: id,
       ...question,
+      positive_marks,
+      negative_marks,
       name: question_name,
       options: option_list,
-    };
+    };    
 
     dispatch(
       addQuestion(data, (res) => {
@@ -122,9 +134,20 @@ export default function () {
           setOptionList([]);
           setQuestionName("");
           setOptionName(null);
+          setQuestionPositiveMarks(0)
+          setQuestionNegativeMarks(0)
           setQuestion(question_data);
+          setOptionIsCorrect(false)
+
+          setMsg({
+            isError : false,
+            message : "Upload Successful"
+          });
         } else {
-          setError(res.data);
+          setMsg({
+            isError : true,
+            message : res.data
+          });
         }
       })
     );
@@ -134,16 +157,35 @@ export default function () {
   const [flag2, setFlag2] = useState(false);
   const [flag3, setFlag3] = useState(false);
   const [flag4, setFlag4] = useState(false);
-  const [show, setShow] = useState(true);
+  const [ isSaveClicked, setSaveClicked ] = useState(false)
+
+
   var typeofquestion = "";
   const [inputList, setInputList] = useState([]);
   const onAddBtnClick = (event) => {
-    if (!option_name) {
+    let op_lis = []
+    let option_data = {
+      name : null,
+      is_correct  : false
+    }
+    if (true) {
+      op_lis.push(
+        option_data
+      )
+      setOptionList(
+        option_list.concat(
+          option_data
+        )
+      )
       setInputList(
         inputList.concat(
           <InputOption
+            op_lis = {op_lis}
             setOptionId={setOptionId}
             inputList={inputList}
+            setOptionList = {setOptionList}
+            option_list = {op_lis}
+            optionVal = {option_list.name}
             option_name={option_name}
             setOptionName={setOptionName}
             setOptionIsCorrect={setOptionIsCorrect}
@@ -154,24 +196,6 @@ export default function () {
     }
   };
 
-  const saveOption = (e) => {
-    const list = {
-      name: option_name,
-      is_correct: option_ischecked,
-    };
-    if (option_list[option_id] !== undefined) {
-      option_list[option_id].name = option_name;
-      setOptionList(option_list);
-      setOptionName(null);
-    } else if (option_name) {
-      setOptionList(option_list.concat(list));
-      setOptionName(null);
-    }
-  };
-
-  if (isLoading) {
-    return <h1 style={{ color: "white" }}>Loading...</h1>;
-  }
 
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
@@ -205,17 +229,15 @@ export default function () {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {show && error && (
+      {msg && (
         <Alert
-          style={{
-            textAlign: "center",
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-          }}
-          variant="danger"
+        style={{
+          textAlign:"center",
+          margin:"0 10em"
+        }}
+        variant={msg.isError ? "danger" : "success"}
         >
-          <p>{error}</p>
+          {msg.message}
         </Alert>
       )}
       <Row style={{ padding: "0%", height: "50rem" }}>
@@ -239,22 +261,22 @@ export default function () {
                 <Col md={6}>
                   <Form.Label>Enter Positive Marks</Form.Label>
                   <Form.Control
-                    value=""
+                    value={positive_marks}
                     type="test"
                     autoComplete="off"
                     onChange={(e) => {
-                      // setQuestionPositiveMarks(e.target.value);
+                      setQuestionPositiveMarks(e.target.value);
                     }}
                   />
                 </Col>
                 <Col md={6}>
                   <Form.Label>Enter Negative Marks</Form.Label>
                   <Form.Control
-                    value=""
+                    value={negative_marks}
                     type="test"
                     autoComplete="off"
                     onChange={(e) => {
-                      // setQuestionNegativeMarks(e.target.value);
+                      setQuestionNegativeMarks(e.target.value);
                     }}
                   />
                 </Col>
@@ -271,35 +293,16 @@ export default function () {
                   borderBottom: "1px solid #d4d9df",
                 }}
                 onChange={(e) => {
-                  console.log(e.target.value);
                   typeofquestion = String(e.target.value);
-                  if (typeofquestion === "Single Correct") {
+                  if (typeofquestion === "Options") {
                     setFlag1(1);
-                    setFlag2(0);
-                    setFlag3(0);
-                    setFlag4(0);
-                  } else if (typeofquestion === "Multiple Correct") {
-                    setFlag1(0);
-                    setFlag2(1);
-                    setFlag3(0);
-                    setFlag4(0);
-                  } else if (typeofquestion === "Fill in the Blank") {
-                    setFlag1(0);
-                    setFlag2(0);
-                    setFlag3(1);
-                    setFlag4(0);
-                  } else if (typeofquestion === "True/False") {
-                    setFlag1(0);
-                    setFlag2(0);
-                    setFlag3(0);
-                    setFlag4(1);
-                  }
+                  }else if(typeofquestion === "Fill in The Blank") setFlag1(0)
                 }}
               >
-                <option value="Null">Choose</option>
+                {/* <option value="Null">Choose</option>
                 <option value="Single Correct">Single Correct</option>
-                <option value="Multiple Correct">Multiple Correct</option>
-                <option value="True/False">True/False</option>
+                <option value="Multiple Correct">Multiple Correct</option> */}
+                <option value="Options">Options</option>
                 <option value="Fill in The Blank">Fill in The Blank</option>
               </select>
             </Form.Group>
@@ -362,13 +365,6 @@ export default function () {
                   onClick={onAddBtnClick}
                 >
                   Add Option
-                </Button>
-                <Button
-                  variant="outline-primary"
-                  onClick={saveOption}
-                  style={{ marginLeft: "1%" }}
-                >
-                  Save
                 </Button>
                 {inputList}
               </div>

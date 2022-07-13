@@ -1,6 +1,7 @@
 import { Card, Col, Button } from "react-bootstrap";
 
 function TestCreated(props) {
+	console.log(props)
 	return (
 		<Col md={4}>
 			<Card
@@ -12,20 +13,24 @@ function TestCreated(props) {
 				<Card.Header>Featured</Card.Header>
 				<Card.Body>
 					<Card.Title>{props.subject}</Card.Title>
-					<Card.Text
+					{/* <Card.Text
 						style={{
 							textAlign: "justify",
 						}}
 					>
 						{props.description}
-					</Card.Text>
+					</Card.Text> */}
 					<br />
 					<Button
 						variant="outline-primary"
 						style={{
 							borderRadius: "20px",
 						}}
-						onClick={props.handleShow}
+						onClick={()=>{
+							props.setSubject(props.subject)
+							props.setInstructions(props.description)
+							props.handleShow()
+						}}
 					>
 						View Details
 					</Button>

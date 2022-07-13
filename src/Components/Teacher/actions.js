@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADD_QUESTION, ADD_TEST, GET_TEST, GET_TESTS } from "./types";
+import { ADD_QUESTION, ADD_TEST, GET_QUESTION, GET_TEST, GET_TESTS } from "./types";
 
 const headers = {
     Authorization:
@@ -93,6 +93,41 @@ export const addQuestion = (data, callback)=>{
             if(res.status === 200){
                 dispatch({
                     type : ADD_TEST,
+                    payload : res.data
+                })
+            }
+            callback(res)
+        })
+        .catch((e)=>{
+            callback(e.response)
+        })
+    }
+}
+
+export const editQuestion = (id,data, callback)=>{
+    return dispatch =>{
+        axios.patch(`/api/questions/${id}/`,data,{
+            headers : headers
+        })
+        .then((res)=>{
+            callback(res)
+        })
+        .catch((e)=>{
+            callback(e.response)
+        })
+    }
+}
+
+
+export const getQuestionById = (id,callback) =>{
+    return dispatch =>{
+        axios.get(`/api/questions/${id}`,{
+            headers : headers
+        })
+        .then((res)=>{
+            if(res.status === 200){
+                dispatch({
+                    type : GET_QUESTION,
                     payload : res.data
                 })
             }

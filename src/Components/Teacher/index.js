@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { addTest } from "./actions";
-
 import {
   Container,
   Navbar,
@@ -36,12 +35,18 @@ var data = {
   students: [],
 };
 
+const headers = {
+  Authorization:
+  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU4ODIwMDg5LCJpYXQiOjE2NTc1MjQwODksImp0aSI6IjIwMWIwNTg4ZDM5MzRiZDY5MDE2ZDA5YTZiYmNjMDA3IiwidXNlcl9pZCI6MzIsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzAzZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzAzZGV5QGdtYWlsLmNvbSJ9.oxqKKmEk_ZHFbXCUpOi2yqU3TuywbjGS122K61WBS2M",
+  "Content-Type": "application/json",
+}
+
 export default function () {
   const dispatch = useDispatch();
 
   var name = "Adam";
-  var subject = "Physics";
-  var description = "2022-04-13 10:00 AM to 2022-04-14 10:00 AM";
+  // var subject = "Physics";
+  // var description = "2022-04-13 10:00 AM to 2022-04-14 10:00 AM";
   var time = "2 Days Ago";
   var name = "Adam Smith";
   var identity = "Teacher";
@@ -60,7 +65,18 @@ export default function () {
     setShow(false);
   };
 
-  const [isfixed, setIsFixed] = useState(false);
+  const [isfixed, setIsFixed] = useState(false)
+  const [tests, setTests] = useState([])
+
+  useEffect(()=>{
+    axios.get('/api/tests/',{
+        headers : headers
+    })
+  .then((res=>{
+    console.log(res)
+    setTests(res.data)
+  }))
+  },[])
 
   function createTest() {
     console.log(submitData);
@@ -78,6 +94,9 @@ export default function () {
 
   // Enter Subject
   const [submitData, setSubmitData] = useState(data);
+  const [subject, setSubject] = useState("")
+  const [description, setDescription] = useState("")
+  const [instructions, setInstructions] = useState("")
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
       <Navbar
@@ -113,12 +132,17 @@ export default function () {
       <Row style={{ padding: "0%", height: "50rem" }}>
         <Col md={9} style={{ padding: "2%" }}>
           <Row>
-            <TestCreated
-              subject={subject}
-              description={description}
+            {tests.map((test)=>(
+              <TestCreated
+              subject={test.name}
+              description={test.instructions}
               time={time}
+              setSubject = {setSubject}
+              setDescription = {setDescription}
+              setInstructions = {setInstructions}
               handleShow={handleShow}
             />
+            ))}
           </Row>
           <br />
           <br />
@@ -186,17 +210,8 @@ export default function () {
           <p>
             <b>Instructions</b>
           </p>
-          <p style={{ margin: "0" }}>
-            1. The examination will comprise of objective type questions
-          </p>
-          <p style={{ margin: "0" }}>
-            2. All questions are compulsory and each carries One mark
-          </p>
-          <p style={{ margin: "0" }}>
-            3. You will be given 15 minutes to complete the examination
-          </p>
-          <p style={{ margin: "0" }}>
-            4. You will be given a notification when the time is up
+          <p>
+            {instructions ? instructions : "No Instructions Given"}
           </p>
           <br />
           <br />

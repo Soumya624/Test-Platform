@@ -6,3 +6,4 @@ export const DELETE_TEST = "DELETE_TEST"
 
 
 export const ADD_QUESTION = "ADD_QUESTION"
+export const GET_QUESTION = "GET_QUESTION"
