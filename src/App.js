@@ -47,7 +47,7 @@ function App() {
         <Route path="/teacher" element={<Teacher/>} />
         <Route path="/student" element={<Student/>} />
         <Route path="/question/:id" element={<Questions/>} />
-        <Route path="/answer" element={<Answer/>} />
+        <Route path="/answer/:test_id/:question_id" element={<Answer/>} />
         <Route path="/question/:test_id/:id/edit" element={<QuestionEdit/>} />
         </Routes>
       </Router>

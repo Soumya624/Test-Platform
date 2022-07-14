@@ -11,11 +11,6 @@ export default function questionReducers (state = initialState, action){
         case GET_QUESTION:
             return {
                 ...state,
-                question : action.payload
-            }
-        case ADD_QUESTION:
-            return{
-                ...state,
                 questions : action.payload
             }
         default:

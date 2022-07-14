@@ -30,6 +30,7 @@ const InputOption = ({
   option_list,
   setOptionList
 }) => {
+  
   const[ option_val, setOptionVal ] = useState(optionVal)
   return (
     <Row
@@ -299,9 +300,9 @@ export default function () {
                   }else if(typeofquestion === "Fill in The Blank") setFlag1(0)
                 }}
               >
-                {/* <option value="Null">Choose</option>
+                <option value="Null">Choose</option>
                 <option value="Single Correct">Single Correct</option>
-                <option value="Multiple Correct">Multiple Correct</option> */}
+                <option value="Multiple Correct">Multiple Correct</option>
                 <option value="Options">Options</option>
                 <option value="Fill in The Blank">Fill in The Blank</option>
               </select>

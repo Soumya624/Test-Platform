@@ -12,7 +12,7 @@ function TestCreated(props) {
 			>
 				<Card.Header>Featured</Card.Header>
 				<Card.Body>
-					<Card.Title>{props.subject}</Card.Title>
+					<Card.Title>{props.name}</Card.Title>
 					{/* <Card.Text
 						style={{
 							textAlign: "justify",
@@ -30,6 +30,7 @@ function TestCreated(props) {
 							props.setSubject(props.subject)
 							props.setInstructions(props.description)
 							props.handleShow()
+							window.location = `/question/${props.test.unique_id}/${props.test.questions[0].id}/edit`
 						}}
 					>
 						View Details

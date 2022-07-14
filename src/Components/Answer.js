@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
   Navbar,
@@ -16,23 +17,179 @@ import {
   Modal,
   ButtonGroup,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Img_Demo from "./Images/Registration.jpg";
+import { getQuestionById } from "./Teacher/actions";
+import axios from "axios";
+
+const headers = {
+  Authorization:
+  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyNTE1LCJpYXQiOjE2NTc3NjY1MTUsImp0aSI6IjIyNzE5MGUzYmQzYzQ3M2VhZGNiOTQ3Yjc3ZDE4Mjk3IiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.-hQv6xMU_vy3xB0TJCIJrli4OxUJ4BDfkLxm9Tr4VZA",
+  "Content-Type": "application/json",
+}
 export default function () {
-  var type = "Single Correct";
-  var positive = 3;
-  var negative = 2;
-  var arrayofQuestionnumber = ["01"];
-  var arrayOne = ["HTML", "CSS", "JavaScript"];
-  var arrayTwo = ["HTML", "CSS", "JavaScript"];
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { test_id,question_id } = useParams()
+
+  // useEffect(()=>{
+  //   dispatch(
+  //     getQuestionById(question_id,(res)=>{
+  //       console.log(res)
+  //     })
+  //   )
+  // },[])
+
+  const questions = useSelector((state) => state.tests.test.questions)
+  const [submission_id, setSubmissionId] = useState(null)
+  const [ answers, setAnswers ] = useState(null)
+  const [ checkedOptions, setCheckedOptions ] = useState([])
+  const [ submission_check, setSubmissionCheck ] = useState([])
+  const ques = questions.filter((q)=> {
+    return q.id == question_id
+  })
+
+  let question_paper = ques[0]
+
+
+  var type = "Multiple Correct";
+  var positive = question_paper.positive_marks;
+  var negative = question_paper.negative_marks;
+  var arrayOne = question_paper.options;
+  var arrayTwo = question_paper.options;
   var arrayThree = ["True", "False"];
   var numberofUnanswered = 0;
   var numberofAnswered = 0;
   var numberofUnattempted = 0;
   var numberofMarkedforreview = 0;
-  var arrayofQuestionnumber = ["01"];
-  var question =
-    "A horizontal force F is applied at the centre of mass of a cylindrical object of mass m and radius R, perpendicular to its axis as shown in the figure. The coefficient of friction between the object and the ground is. The centre of mass of the object has an acceleration a. The acceleration due to gravity is g. Given that the object rolls without slipping, which of the following statement(s) is(are) correct?";
+  var question = question_paper.name
+
+  useEffect(()=>{
+    setAnswers(null)
+    axios.get(`/api/submission/${test_id}/`,{
+      headers : headers
+    })
+    .then((res)=>{
+      console.log(res.data)
+      setSubmissionCheck(res.data)
+    })
+
+
+    axios.get(`/api/submission/${test_id}/${question_id}`,{
+      headers : headers
+    })
+    .then((res)=>{
+      if(res.status === 200){
+        console.log(res.data)
+        if(res.data.length > 0){
+          setAnswers(res.data[0])
+          let options = res.data[0].answer_submitted
+          let list = []
+          for(let op of options){
+            list.push(op.id)
+          }
+          setCheckedOptions(list)
+          setSubmissionId(res.data.id)
+        }
+        
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  },[question_id])
+
+  function saveAttempts(){
+    let data = {
+      question : question_id,
+      answer_submitted : checkedOptions,
+      is_attempted : true,
+    }
+
+    console.log(data)
+    console.log(answers)
+    if(answers)
+    {
+      axios.patch(`/api/submission/${test_id}/${question_id}/`,data,{
+        headers : headers
+      })
+      .then((res)=>{
+        console.log(res)
+        if(res.status === 200){
+          setAnswers(null)
+        }
+      })
+    }
+    else{
+      axios.post(`/api/submission/${test_id}/${parseInt(question_id)}/`,data,{
+        headers : headers
+      })
+      .then((res)=>{
+        if(res.status === 201){
+          setAnswers(null)
+        }
+      })
+    }
+    
+  }
+
+
+  function saveReview(){
+    const data = {
+      is_attempted : true,
+      is_reviewed : true,
+    }
+    if(answers)
+    {
+      axios.patch(`/api/submission/${test_id}/${question_id}/`,data,{
+        headers : headers
+      })
+      .then((res)=>{
+        console.log(res)
+        if(res.status === 200){
+          setAnswers(null)
+        }
+      })
+    }
+    else{
+      axios.post(`/api/submission/${test_id}/${parseInt(question_id)}/`,data,{
+        headers : headers
+      })
+      .then((res)=>{
+        if(res.status === 201){
+          setAnswers(null)
+        }
+      })
+    }
+  }
+
+
+  const style = {
+    is_attempted : {
+      borderRadius: "50%",
+      backgroundColor: "#68b45a",
+      border: "none",
+    },
+    is_reviewed : {
+      borderRadius: "50%",
+      backgroundColor: "#7b449e",
+      border: "none",
+    },
+    not_visited : {
+      borderRadius: "50%",
+      backgroundColor: "white",
+      borderColor: "black",
+      color: "black",
+    },
+    not_answered : {
+      borderRadius: "50%",
+      backgroundColor: "#c6462f",
+      border: "none",
+    }
+  }
+
+
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
       <Navbar
@@ -52,8 +209,6 @@ export default function () {
               navbarScroll
             ></Nav>
             <Form className="d-flex">
-              {/* <Nav.Link href="#about">About</Nav.Link>
-                <Nav.Link href="#">Contact Us</Nav.Link> */}
               +{positive} For Right Answer/-{negative} For Wrong Answer
             </Form>
           </Navbar.Collapse>
@@ -78,8 +233,9 @@ export default function () {
                     id={item}
                     name="fav_language"
                     value={item}
+                    
                   />
-                  <label for={item}>&nbsp;{item}</label>
+                  <label for={item.name}>&nbsp;{item.name}</label>
                 </div>
               );
             })}
@@ -98,8 +254,25 @@ export default function () {
                     id={item}
                     name="fav_language"
                     value={item}
+                    checked={checkedOptions.filter((ans)=> ans == item.id).length > 0}
+                    onChange = {(e)=>{
+                      console.log(e.target.checked)
+                      let checkedOpts = checkedOptions
+                      checkedOpts = checkedOpts.filter((ch)=>{
+                        return ch != item.id
+                      })
+                      if(e.target.checked){
+                        checkedOpts.push(item.id)
+                      }else{
+                        checkedOpts = checkedOpts.filter((ch)=>{
+                          return ch != item.id
+                        })
+                      }
+
+                      setCheckedOptions(checkedOpts)
+                    }}
                   />
-                  <label for={item}>&nbsp;{item}</label>
+                  <label for={item.name}>&nbsp;{item.name}</label>
                 </div>
               );
             })}
@@ -162,6 +335,7 @@ export default function () {
                     fontSize: "100%",
                     width:"100%"
                   }}
+                  onClick = {saveAttempts}
                 >
                   Save & Next
                 </Button>
@@ -175,6 +349,10 @@ export default function () {
                     margin: "0.5%",
                     fontSize: "100%",
                     width:"100%"
+                  }}
+
+                  onClick = {()=>{
+                    saveReview()
                   }}
                 >
                   Mark for Review & Next
@@ -243,7 +421,7 @@ export default function () {
                     border: "none",
                   }}
                 >
-                  {numberofUnanswered}
+                  {submission_check.filter((subs)=>subs.answer_submitted.length === 0 && subs.subjective_answer === null).length}
                 </Button>{" "}
                 Not Answer
               </Col>
@@ -257,7 +435,7 @@ export default function () {
                     border: "none",
                   }}
                 >
-                  {numberofAnswered}
+                  {submission_check.filter((subs)=>subs.is_attempted).length}
                 </Button>{" "}
                 Answered
               </Col>
@@ -269,7 +447,7 @@ export default function () {
                     border: "none",
                   }}
                 >
-                  {numberofMarkedforreview}
+                  {submission_check.filter((subs)=>subs.is_reviewed).length}
                 </Button>{" "}
                 For Review
               </Col>
@@ -283,66 +461,31 @@ export default function () {
             </p>
             <Row>
               <Col xs={1}></Col>
-              <Col xs={2}>
+              {questions.map((question,i)=>{
+                let check = submission_check.filter((s) => s.question === question.id)
+                let btn_style = null
+                if( check.length === 0 ){
+                  btn_style = style.not_visited
+                }else{
+                  if(check[0].answer_submitted.length === 0 && check[0].subjective_answer === null) btn_style = style.not_answered
+                  else if(check[0].is_reviewed){
+                    btn_style = style.is_reviewed
+                  }
+                  else if(check[0].is_attempted) btn_style = style.is_attempted
+                }
+                return (
+                <Col xs={2}>
                 <Button
-                  style={{
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    borderColor: "black",
-                    color: "black",
+                  style={btn_style}
+                  onClick = {()=>{
+                    setCheckedOptions([])
+                    navigate(`/answer/${test_id}/${question.id}`)
                   }}
                 >
-                  01
+                  {i + 1 >= 1 && i + 1 <= 9 ? `0${i + 1}` : i + 1}
                 </Button>{" "}
               </Col>
-              <Col xs={2}>
-                <Button
-                  style={{
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    borderColor: "black",
-                    color: "black",
-                  }}
-                >
-                  02
-                </Button>{" "}
-              </Col>
-              <Col xs={2}>
-                <Button
-                  style={{
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    borderColor: "black",
-                    color: "black",
-                  }}
-                >
-                  03
-                </Button>{" "}
-              </Col>
-              <Col xs={2}>
-                <Button
-                  style={{
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    borderColor: "black",
-                    color: "black",
-                  }}
-                >
-                  04
-                </Button>{" "}
-              </Col>
-              <Col xs={2}>
-                <Button
-                  style={{
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    borderColor: "black",
-                    color: "black",
-                  }}
-                >
-                  05
-                </Button>{" "}
-              </Col>
+              )})}
               <Col xs={1}></Col>
             </Row>
           </center>
@@ -368,6 +511,7 @@ export default function () {
                 margin: "0.5% 0.5% 0.5% 1%",
                 fontSize: "100%",
               }}
+              onClick = {saveAttempts}
             >
               Save & Next
             </Button>
@@ -378,6 +522,10 @@ export default function () {
                 border: "none",
                 margin: "0.5%",
                 fontSize: "100%",
+              }}
+
+              onClick = {()=>{
+                saveReview()
               }}
             >
               Mark for Review & Next

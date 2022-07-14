@@ -37,7 +37,7 @@ var data = {
 
 const headers = {
   Authorization:
-  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU4ODIwMDg5LCJpYXQiOjE2NTc1MjQwODksImp0aSI6IjIwMWIwNTg4ZDM5MzRiZDY5MDE2ZDA5YTZiYmNjMDA3IiwidXNlcl9pZCI6MzIsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzAzZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzAzZGV5QGdtYWlsLmNvbSJ9.oxqKKmEk_ZHFbXCUpOi2yqU3TuywbjGS122K61WBS2M",
+  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyMzkyLCJpYXQiOjE2NTc3NjYzOTIsImp0aSI6ImIzMDhlZWVkYWU5ZDQ2YmI5ZDQwZjE4YzQ0OGUzYjJlIiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.DfS_Ysnwi0KHawjvob4B4iavz7JPyV1XnGibzYHM8W0",
   "Content-Type": "application/json",
 }
 
@@ -134,7 +134,8 @@ export default function () {
           <Row>
             {tests.map((test)=>(
               <TestCreated
-              subject={test.name}
+              test = {test}
+              name={test.name}
               description={test.instructions}
               time={time}
               setSubject = {setSubject}
