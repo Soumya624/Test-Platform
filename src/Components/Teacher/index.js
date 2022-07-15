@@ -67,6 +67,7 @@ export default function () {
 
   const [isfixed, setIsFixed] = useState(false)
   const [tests, setTests] = useState([])
+  const [ test_details, setTestDetails ] = useState(null)
 
   useEffect(()=>{
     axios.get('/api/tests/',{
@@ -142,6 +143,7 @@ export default function () {
               setDescription = {setDescription}
               setInstructions = {setInstructions}
               handleShow={handleShow}
+              setTestDetails = {setTestDetails}
             />
             ))}
           </Row>
@@ -217,13 +219,13 @@ export default function () {
           <br />
           <br />
           <center>
-            <Button
+            {test_details && <Button
               variant="outline-primary"
               style={{ borderRadius: "20px", margin: "0.5%" }}
-              href="/question"
+              href={`/question/${test_details.id}/${test_details.q_id}/edit`}
             >
               Edit Exam
-            </Button>
+            </Button>}
             <Button
               variant="outline-primary"
               style={{ borderRadius: "20px", margin: "0.5%" }}

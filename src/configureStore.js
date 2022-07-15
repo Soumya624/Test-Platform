@@ -9,6 +9,7 @@ const middleWare = [thunk];
 const persistConfig = {
 	key: "root",
 	storage,
+	timeout : null
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

@@ -54,6 +54,20 @@ export default function () {
 	const [test_name, setTestName] = useState(null);
 	const [question_id,setQuestionId] = useState(null)
 	const [instructions, setInstructions] = useState(null);
+	const [ check_attempts, setCheckAttempts ] = useState(null)
+
+	function checkAttempts(id){
+		axios.get(`/api/check_attempts/${id}/`,{
+			headers : headers
+		})
+		.then((res)=>{
+			console.log(res.data)
+			if(res.status === 200){
+				if(res.data === "You have already submitted") setCheckAttempts(false)
+				if(res.data === "Can attempt") setCheckAttempts(true)
+			}
+		})
+	}
 
 	const dispatch = useDispatch()
 
@@ -141,6 +155,8 @@ export default function () {
 													// console.log(test.questions)
 													setQuestionId(test.questions[0])
 													handleShow();
+
+													checkAttempts(test.unique_id)
 												}}
 											>
 												Give Test
@@ -212,6 +228,7 @@ export default function () {
 					<br />
 					<center>
 						<Button
+							disabled = {!check_attempts}
 							variant="outline-primary"
 							style={{ borderRadius: "20px" }}
 							onClick={()=>{

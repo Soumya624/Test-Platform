@@ -29,9 +29,11 @@ const InputOption = ({
   setOptionId,
   option_list,
   setOptionList,
-  id
+  id,
+  option_checked
 }) => {
   const[ option_val, setOptionVal ] = useState(optionVal)
+  const [ checked, setChecked ] = useState(option_checked)
   return (
     <Row
       style={{
@@ -47,12 +49,13 @@ const InputOption = ({
           placeholder="Enter the Option"
           style={{ width: "100%" }}
           onClick={(e) => {
-            
+            console.log(id)
+            // console.log(e.target.checked)
             setOptionId(id);
             setOptionName(e.target.value);
           }}
           onChange={(e) => {
-            if(id) option_list[id].name = e.target.value
+            if(id !== undefined) option_list[id].name = e.target.value
             else option_list[option_list.length-1].name = e.target.value
             setOptionVal(e.target.value)
             setOptionName(e.target.value);
@@ -62,12 +65,19 @@ const InputOption = ({
       <Col xs={6}>
         <Form.Check
           type="checkbox"
+          checked = {checked}
           label="Is Correct"
           style={{ margin: "1%" }}
+          onClick={(e) => {
+            setOptionId(id);
+            setOptionName(e.target.value);
+          }}
           onChange={(e) => {
-            if(id) option_list[id].is_correct = e.target.checked
+            console.log(id)
+            console.log(e.target.checked)
+            if(id !== undefined) option_list[id].is_correct = e.target.checked
             else option_list[option_list.length-1].is_correct = e.target.checked
-
+            setChecked(e.target.checked)
             setOptionIsCorrect(e.target.checked);
           }}
         />
@@ -119,6 +129,7 @@ export default function () {
                 option_list = {options}
                 inputList={list}
                 optionVal = {op.name}
+                option_checked = { op.is_correct }
                 option_name={option_name}
                 setOptionName={setOptionName}
                 setOptionIsCorrect={setOptionIsCorrect}
@@ -160,6 +171,7 @@ export default function () {
       negative_marks,
       options: option_list,
     };
+
     dispatch(
       editQuestion(id,data, (res) => {
         if(res.status === 200){
@@ -206,6 +218,7 @@ export default function () {
             setOptionList = {setOptionList}
             option_list = {op_lis}
             optionVal = {option_list.name}
+            option_checked = { option_list.is_correct }
             option_name={option_name}
             setOptionName={setOptionName}
             setOptionIsCorrect={setOptionIsCorrect}
@@ -362,6 +375,12 @@ export default function () {
               style={{ borderRadius: "20px", margin: "0.5%" }}
             >
               Publish Changes
+            </Button>
+            <Button variant="outline-primary"
+              style={{ borderRadius: "20px", margin: "0.5%" }}
+              href = {`/question/${test_id}/`}
+              >
+                Add Question
             </Button>
           </center>
         </Col>

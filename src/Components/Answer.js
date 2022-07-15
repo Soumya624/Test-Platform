@@ -46,23 +46,25 @@ export default function () {
   const [ answers, setAnswers ] = useState(null)
   const [ checkedOptions, setCheckedOptions ] = useState([])
   const [ submission_check, setSubmissionCheck ] = useState([])
+  const [subjective_answer, setSubjectiveAnswer] = useState(null)
   const ques = questions.filter((q)=> {
     return q.id == question_id
   })
 
+  console.log(ques)
+
   let question_paper = ques[0]
 
 
-  var type = "Multiple Correct";
+  var type = question_paper.type;
   var positive = question_paper.positive_marks;
   var negative = question_paper.negative_marks;
   var arrayOne = question_paper.options;
   var arrayTwo = question_paper.options;
-  var arrayThree = ["True", "False"];
-  var numberofUnanswered = 0;
-  var numberofAnswered = 0;
-  var numberofUnattempted = 0;
-  var numberofMarkedforreview = 0;
+  var numberofUnanswered = submission_check.filter((subs)=>subs.answer_submitted.length === 0 && subs.subjective_answer === null).length
+  var numberofAnswered = submission_check.filter((subs)=>subs.is_attempted).length;
+  var numberofUnattempted = questions.length - numberofAnswered;
+  var numberofMarkedforreview = submission_check.filter((subs)=>subs.is_reviewed).length;
   var question = question_paper.name
 
   useEffect(()=>{
@@ -74,14 +76,12 @@ export default function () {
       console.log(res.data)
       setSubmissionCheck(res.data)
     })
-
-
+    
     axios.get(`/api/submission/${test_id}/${question_id}`,{
       headers : headers
     })
     .then((res)=>{
       if(res.status === 200){
-        console.log(res.data)
         if(res.data.length > 0){
           setAnswers(res.data[0])
           let options = res.data[0].answer_submitted
@@ -100,18 +100,17 @@ export default function () {
     })
   },[question_id])
 
-  function saveAttempts(){
+  async function saveAttempts(){
     let data = {
       question : question_id,
       answer_submitted : checkedOptions,
       is_attempted : true,
+      subjective_answer : subjective_answer,
     }
 
-    console.log(data)
-    console.log(answers)
     if(answers)
     {
-      axios.patch(`/api/submission/${test_id}/${question_id}/`,data,{
+      await axios.patch(`/api/submission/${test_id}/${question_id}/`,data,{
         headers : headers
       })
       .then((res)=>{
@@ -122,16 +121,51 @@ export default function () {
       })
     }
     else{
-      axios.post(`/api/submission/${test_id}/${parseInt(question_id)}/`,data,{
+      await axios.post(`/api/submission/${test_id}/${parseInt(question_id)}/`,data,{
         headers : headers
       })
       .then((res)=>{
+        console.log(res)
         if(res.status === 201){
           setAnswers(null)
         }
       })
     }
+
+    axios.get(`/api/submission/${test_id}/`,{
+      headers : headers
+    })
+    .then((res)=>{
+      console.log(res.data)
+      setSubmissionCheck(res.data)
+    })
+  }
+
+  function submitQuestion(){
+    let ans = []
+    for(let sub of submission_check){
+      ans.push(sub.id)
+    }
+
+    let data = {
+      name : "Attempt 1",
+      submissions : ans
+    }
+
+    console.log(data)
+
     
+    axios.post(`/api/attempts/${test_id}/`,data,{
+      headers : headers
+    })
+    .then((res)=>{
+      if(res.status === 201){
+        window.location = '/student'
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
 
@@ -162,7 +196,19 @@ export default function () {
         }
       })
     }
+
+
+    axios.get(`/api/submission/${test_id}/`,{
+      headers : headers
+    })
+    .then((res)=>{
+      console.log(res.data)
+      setSubmissionCheck(res.data)
+    })
   }
+
+
+  console.log(submission_check)
 
 
   const style = {
@@ -230,10 +276,14 @@ export default function () {
                 <div>
                   <input
                     type="radio"
-                    id={item}
+                    id={item.id}
                     name="fav_language"
                     value={item}
-                    
+                    checked={checkedOptions.filter((ans)=> ans === item.id).length > 0}
+                    onChange = {(e)=>{
+                      let l = [item.id]
+                      setCheckedOptions(l)
+                    }}
                   />
                   <label for={item.name}>&nbsp;{item.name}</label>
                 </div>
@@ -254,21 +304,20 @@ export default function () {
                     id={item}
                     name="fav_language"
                     value={item}
-                    checked={checkedOptions.filter((ans)=> ans == item.id).length > 0}
+                    checked={checkedOptions.filter((ans)=> ans === item.id).length > 0}
                     onChange = {(e)=>{
                       console.log(e.target.checked)
                       let checkedOpts = checkedOptions
                       checkedOpts = checkedOpts.filter((ch)=>{
-                        return ch != item.id
+                        return ch !== item.id
                       })
                       if(e.target.checked){
                         checkedOpts.push(item.id)
                       }else{
                         checkedOpts = checkedOpts.filter((ch)=>{
-                          return ch != item.id
+                          return ch !== item.id
                         })
                       }
-
                       setCheckedOptions(checkedOpts)
                     }}
                   />
@@ -294,27 +343,10 @@ export default function () {
                 width: "70%",
                 padding: "1%",
               }}
+              onChange = {e=>{
+                setSubjectiveAnswer(e.target.value)
+              }}
             />
-          </Form>
-          <Form
-            style={{
-              margin: "2%",
-              display: type === "True/False" ? "block" : "none",
-            }}
-          >
-            {arrayThree.map((item, index) => {
-              return (
-                <div>
-                  <input
-                    type="radio"
-                    id={item}
-                    name="fav_language"
-                    value={item}
-                  />
-                  <label for={item}>&nbsp;{item}</label>
-                </div>
-              );
-            })}
           </Form>
           <br />
           <Row
@@ -384,6 +416,7 @@ export default function () {
                     fontSize: "100%",
                     width:"100%"
                   }}
+                  onClick = {submitQuestion}
                 >
                   Submit & Close
                 </Button>
@@ -421,7 +454,7 @@ export default function () {
                     border: "none",
                   }}
                 >
-                  {submission_check.filter((subs)=>subs.answer_submitted.length === 0 && subs.subjective_answer === null).length}
+                  {numberofUnanswered}
                 </Button>{" "}
                 Not Answer
               </Col>
@@ -435,7 +468,7 @@ export default function () {
                     border: "none",
                   }}
                 >
-                  {submission_check.filter((subs)=>subs.is_attempted).length}
+                  {numberofAnswered}
                 </Button>{" "}
                 Answered
               </Col>
@@ -447,7 +480,7 @@ export default function () {
                     border: "none",
                   }}
                 >
-                  {submission_check.filter((subs)=>subs.is_reviewed).length}
+                  {numberofMarkedforreview}
                 </Button>{" "}
                 For Review
               </Col>
@@ -552,6 +585,7 @@ export default function () {
               margin: "0.5% 1% 0.5% 0.5%",
               fontSize: "100%",
             }}
+            onClick = {submitQuestion}
           >
             Submit & Close
           </Button>

@@ -126,6 +126,7 @@ export default function () {
       negative_marks,
       name: question_name,
       options: option_list,
+      type : typeofquestion
     };    
 
     dispatch(
@@ -160,8 +161,7 @@ export default function () {
   const [flag4, setFlag4] = useState(false);
   const [ isSaveClicked, setSaveClicked ] = useState(false)
 
-
-  var typeofquestion = "";
+  const [ typeofquestion, setTypeOfQuestion ] = useState("")
   const [inputList, setInputList] = useState([]);
   const onAddBtnClick = (event) => {
     let op_lis = []
@@ -197,6 +197,7 @@ export default function () {
     }
   };
 
+  console.log(typeofquestion)
 
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
@@ -294,16 +295,16 @@ export default function () {
                   borderBottom: "1px solid #d4d9df",
                 }}
                 onChange={(e) => {
-                  typeofquestion = String(e.target.value);
-                  if (typeofquestion === "Options") {
+                  let t = String(e.target.value);
+                  setTypeOfQuestion(t)
+                  if (t === "Multiple Correct" || t === "Single Correct" ) {
                     setFlag1(1);
-                  }else if(typeofquestion === "Fill in The Blank") setFlag1(0)
+                  }else if(t === "Fill in The Blank") setFlag1(0)
                 }}
               >
-                <option value="Null">Choose</option>
+                <option value="Null" selected disabled>Choose</option>
                 <option value="Single Correct">Single Correct</option>
                 <option value="Multiple Correct">Multiple Correct</option>
-                <option value="Options">Options</option>
                 <option value="Fill in The Blank">Fill in The Blank</option>
               </select>
             </Form.Group>
@@ -320,9 +321,9 @@ export default function () {
                 >
                   Add Option
                 </Button>
-                <Button variant="outline-primary" style={{ marginLeft: "1%" }}>
+                {/* <Button variant="outline-primary" style={{ marginLeft: "1%" }}>
                   Save
-                </Button>
+                </Button> */}
                 {inputList}
               </div>
               <Form.Control type="email" />
@@ -348,9 +349,9 @@ export default function () {
                 >
                   Add Option
                 </Button>
-                <Button variant="outline-primary" style={{ marginLeft: "1%" }}>
+                {/* <Button variant="outline-primary" style={{ marginLeft: "1%" }}>
                   Save
-                </Button>
+                </Button> */}
                 {inputList}
               </div>
             </Form.Group>

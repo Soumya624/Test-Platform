@@ -30,7 +30,11 @@ function TestCreated(props) {
 							props.setSubject(props.subject)
 							props.setInstructions(props.description)
 							props.handleShow()
-							window.location = `/question/${props.test.unique_id}/${props.test.questions[0].id}/edit`
+							props.setTestDetails({
+								id : props.test.unique_id,
+								q_id : props.test.questions[0].id
+							})
+							// window.location = `/question/${props.test.unique_id}/${props.test.questions[0].id}/edit`
 						}}
 					>
 						View Details
