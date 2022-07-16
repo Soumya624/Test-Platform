@@ -93,6 +93,19 @@ export default function () {
     );
   }
 
+  function viewResult(id) {
+    axios
+      .get(`/api/result/${id}/`, {
+        headers: headers,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   // Enter Subject
   const [submitData, setSubmitData] = useState(data);
   const [subject, setSubject] = useState("")
@@ -218,17 +231,24 @@ export default function () {
           </p>
           <br />
           <br />
+          
           <center>
             {test_details && <Button
               variant="outline-primary"
               style={{ borderRadius: "20px", margin: "0.5%" }}
               href={`/question/${test_details.id}/${test_details.q_id}/edit`}
+
             >
               Edit Exam
-            </Button>}
+            </Button>
+            }
+            
             <Button
               variant="outline-primary"
               style={{ borderRadius: "20px", margin: "0.5%" }}
+              onClick={() => {
+                viewResult(test_details.id);
+              }}
             >
               View Result
             </Button>

@@ -24,14 +24,13 @@ import axios from "axios";
 
 const headers = {
   Authorization:
-  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyNTE1LCJpYXQiOjE2NTc3NjY1MTUsImp0aSI6IjIyNzE5MGUzYmQzYzQ3M2VhZGNiOTQ3Yjc3ZDE4Mjk3IiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.-hQv6xMU_vy3xB0TJCIJrli4OxUJ4BDfkLxm9Tr4VZA",
+    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyNTE1LCJpYXQiOjE2NTc3NjY1MTUsImp0aSI6IjIyNzE5MGUzYmQzYzQ3M2VhZGNiOTQ3Yjc3ZDE4Mjk3IiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.-hQv6xMU_vy3xB0TJCIJrli4OxUJ4BDfkLxm9Tr4VZA",
   "Content-Type": "application/json",
-}
+};
 export default function () {
-
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { test_id,question_id } = useParams()
+  const navigate = useNavigate();
+  const { test_id, question_id } = useParams();
 
   // useEffect(()=>{
   //   dispatch(
@@ -41,200 +40,206 @@ export default function () {
   //   )
   // },[])
 
-  const questions = useSelector((state) => state.tests.test.questions)
-  const [submission_id, setSubmissionId] = useState(null)
-  const [ answers, setAnswers ] = useState(null)
-  const [ checkedOptions, setCheckedOptions ] = useState([])
-  const [ submission_check, setSubmissionCheck ] = useState([])
-  const [subjective_answer, setSubjectiveAnswer] = useState(null)
-  const ques = questions.filter((q)=> {
-    return q.id == question_id
-  })
+  const questions = useSelector((state) => state.tests.test.questions);
+  const [submission_id, setSubmissionId] = useState(null);
+  const [answers, setAnswers] = useState(null);
+  const [checkedOptions, setCheckedOptions] = useState([]);
+  const [submission_check, setSubmissionCheck] = useState([]);
+  const [subjective_answer, setSubjectiveAnswer] = useState(null);
+  const ques = questions.filter((q) => {
+    return q.id == question_id;
+  });
 
-  console.log(ques)
+  console.log(ques);
 
-  let question_paper = ques[0]
-
+  let question_paper = ques[0];
 
   var type = question_paper.type;
   var positive = question_paper.positive_marks;
   var negative = question_paper.negative_marks;
   var arrayOne = question_paper.options;
   var arrayTwo = question_paper.options;
-  var numberofUnanswered = submission_check.filter((subs)=>subs.answer_submitted.length === 0 && subs.subjective_answer === null).length
-  var numberofAnswered = submission_check.filter((subs)=>subs.is_attempted).length;
+  var numberofUnanswered = submission_check.filter(
+    (subs) =>
+      subs.answer_submitted.length === 0 && subs.subjective_answer === null
+  ).length;
+  var numberofAnswered = submission_check.filter(
+    (subs) => subs.is_attempted
+  ).length;
   var numberofUnattempted = questions.length - numberofAnswered;
-  var numberofMarkedforreview = submission_check.filter((subs)=>subs.is_reviewed).length;
-  var question = question_paper.name
+  var numberofMarkedforreview = submission_check.filter(
+    (subs) => subs.is_reviewed
+  ).length;
+  var question = question_paper.name;
 
-  useEffect(()=>{
-    setAnswers(null)
-    axios.get(`/api/submission/${test_id}/`,{
-      headers : headers
-    })
-    .then((res)=>{
-      console.log(res.data)
-      setSubmissionCheck(res.data)
-    })
-    
-    axios.get(`/api/submission/${test_id}/${question_id}`,{
-      headers : headers
-    })
-    .then((res)=>{
-      if(res.status === 200){
-        if(res.data.length > 0){
-          setAnswers(res.data[0])
-          let options = res.data[0].answer_submitted
-          let list = []
-          for(let op of options){
-            list.push(op.id)
+  useEffect(() => {
+    setAnswers(null);
+    axios
+      .get(`/api/submission/${test_id}/`, {
+        headers: headers,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setSubmissionCheck(res.data);
+      });
+
+    axios
+      .get(`/api/submission/${test_id}/${question_id}`, {
+        headers: headers,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.length > 0) {
+            setAnswers(res.data[0]);
+            let options = res.data[0].answer_submitted;
+            let list = [];
+            for (let op of options) {
+              list.push(op.id);
+            }
+            setCheckedOptions(list);
+            setSubmissionId(res.data.id);
           }
-          setCheckedOptions(list)
-          setSubmissionId(res.data.id)
         }
-        
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  },[question_id])
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-  async function saveAttempts(){
+  }, [question_id]);
+
+  async function saveAttempts() {
     let data = {
-      question : question_id,
-      answer_submitted : checkedOptions,
-      is_attempted : true,
-      subjective_answer : subjective_answer,
+      question: question_id,
+      answer_submitted: checkedOptions,
+      is_attempted: true,
+      subjective_answer: subjective_answer,
+    };
+
+    if (answers) {
+      await axios
+        .patch(`/api/submission/${test_id}/${question_id}/`, data, {
+          headers: headers,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            setAnswers(null);
+          }
+        });
+    } else {
+      await axios
+        .post(`/api/submission/${test_id}/${parseInt(question_id)}/`, data, {
+          headers: headers,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 201) {
+            setAnswers(null);
+          }
+        });
     }
 
-    if(answers)
-    {
-      await axios.patch(`/api/submission/${test_id}/${question_id}/`,data,{
-        headers : headers
+    axios
+      .get(`/api/submission/${test_id}/`, {
+        headers: headers,
       })
-      .then((res)=>{
-        console.log(res)
-        if(res.status === 200){
-          setAnswers(null)
-        }
-      })
-    }
-    else{
-      await axios.post(`/api/submission/${test_id}/${parseInt(question_id)}/`,data,{
-        headers : headers
-      })
-      .then((res)=>{
-        console.log(res)
-        if(res.status === 201){
-          setAnswers(null)
-        }
-      })
-    }
-
-    axios.get(`/api/submission/${test_id}/`,{
-      headers : headers
-    })
-    .then((res)=>{
-      console.log(res.data)
-      setSubmissionCheck(res.data)
-    })
+      .then((res) => {
+        console.log(res.data);
+        setSubmissionCheck(res.data);
+      });
   }
 
-  function submitQuestion(){
-    let ans = []
-    for(let sub of submission_check){
-      ans.push(sub.id)
+  function submitQuestion() {
+    let ans = [];
+    for (let sub of submission_check) {
+      ans.push(sub.id);
     }
 
     let data = {
-      name : "Attempt 1",
-      submissions : ans
-    }
+      name: "Attempt 1",
+      submissions: ans,
+    };
 
-    console.log(data)
+    console.log(data);
 
-    
-    axios.post(`/api/attempts/${test_id}/`,data,{
-      headers : headers
-    })
-    .then((res)=>{
-      if(res.status === 201){
-        window.location = '/student'
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+    axios
+      .post(`/api/attempts/${test_id}/`, data, {
+        headers: headers,
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          window.location = "/student";
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-
-  function saveReview(){
+  function saveReview() {
     const data = {
-      is_attempted : true,
-      is_reviewed : true,
-    }
-    if(answers)
-    {
-      axios.patch(`/api/submission/${test_id}/${question_id}/`,data,{
-        headers : headers
-      })
-      .then((res)=>{
-        console.log(res)
-        if(res.status === 200){
-          setAnswers(null)
-        }
-      })
-    }
-    else{
-      axios.post(`/api/submission/${test_id}/${parseInt(question_id)}/`,data,{
-        headers : headers
-      })
-      .then((res)=>{
-        if(res.status === 201){
-          setAnswers(null)
-        }
-      })
+      is_attempted: true,
+      is_reviewed: true,
+    };
+    if (answers) {
+      axios
+        .patch(`/api/submission/${test_id}/${question_id}/`, data, {
+          headers: headers,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            setAnswers(null);
+          }
+        });
+    } else {
+      axios
+        .post(`/api/submission/${test_id}/${parseInt(question_id)}/`, data, {
+          headers: headers,
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            setAnswers(null);
+          }
+        });
     }
 
-
-    axios.get(`/api/submission/${test_id}/`,{
-      headers : headers
-    })
-    .then((res)=>{
-      console.log(res.data)
-      setSubmissionCheck(res.data)
-    })
+    axios
+      .get(`/api/submission/${test_id}/`, {
+        headers: headers,
+      })
+      .then((res) => {
+        console.log(res.data);
+        // console.log(http://127.0.0.1:8000/api/result/{{test_id}}/)
+        setSubmissionCheck(res.data);
+      });
   }
 
-
-  console.log(submission_check)
-
+  console.log(submission_check);
 
   const style = {
-    is_attempted : {
+    is_attempted: {
       borderRadius: "50%",
       backgroundColor: "#68b45a",
       border: "none",
     },
-    is_reviewed : {
+    is_reviewed: {
       borderRadius: "50%",
       backgroundColor: "#7b449e",
       border: "none",
     },
-    not_visited : {
+    not_visited: {
       borderRadius: "50%",
       backgroundColor: "white",
       borderColor: "black",
       color: "black",
     },
-    not_answered : {
+    not_answered: {
       borderRadius: "50%",
       backgroundColor: "#c6462f",
       border: "none",
-    }
-  }
-
+    },
+  };
 
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
@@ -279,10 +284,12 @@ export default function () {
                     id={item.id}
                     name="fav_language"
                     value={item}
-                    checked={checkedOptions.filter((ans)=> ans === item.id).length > 0}
-                    onChange = {(e)=>{
-                      let l = [item.id]
-                      setCheckedOptions(l)
+                    checked={
+                      checkedOptions.filter((ans) => ans === item.id).length > 0
+                    }
+                    onChange={(e) => {
+                      let l = [item.id];
+                      setCheckedOptions(l);
                     }}
                   />
                   <label for={item.name}>&nbsp;{item.name}</label>
@@ -304,21 +311,23 @@ export default function () {
                     id={item}
                     name="fav_language"
                     value={item}
-                    checked={checkedOptions.filter((ans)=> ans === item.id).length > 0}
-                    onChange = {(e)=>{
-                      console.log(e.target.checked)
-                      let checkedOpts = checkedOptions
-                      checkedOpts = checkedOpts.filter((ch)=>{
-                        return ch !== item.id
-                      })
-                      if(e.target.checked){
-                        checkedOpts.push(item.id)
-                      }else{
-                        checkedOpts = checkedOpts.filter((ch)=>{
-                          return ch !== item.id
-                        })
+                    checked={
+                      checkedOptions.filter((ans) => ans === item.id).length > 0
+                    }
+                    onChange={(e) => {
+                      console.log(e.target.checked);
+                      let checkedOpts = checkedOptions;
+                      checkedOpts = checkedOpts.filter((ch) => {
+                        return ch !== item.id;
+                      });
+                      if (e.target.checked) {
+                        checkedOpts.push(item.id);
+                      } else {
+                        checkedOpts = checkedOpts.filter((ch) => {
+                          return ch !== item.id;
+                        });
                       }
-                      setCheckedOptions(checkedOpts)
+                      setCheckedOptions(checkedOpts);
                     }}
                   />
                   <label for={item.name}>&nbsp;{item.name}</label>
@@ -343,8 +352,8 @@ export default function () {
                 width: "70%",
                 padding: "1%",
               }}
-              onChange = {e=>{
-                setSubjectiveAnswer(e.target.value)
+              onChange={(e) => {
+                setSubjectiveAnswer(e.target.value);
               }}
             />
           </Form>
@@ -356,7 +365,7 @@ export default function () {
               display: window.innerWidth < 768 ? "" : "none",
             }}
           >
-            <Row style={{margin:"0.5%"}}>
+            <Row style={{ margin: "0.5%" }}>
               <Col xs={6}>
                 <Button
                   style={{
@@ -365,9 +374,9 @@ export default function () {
                     border: "none",
                     margin: "0.5% 0.5% 0.5% 1%",
                     fontSize: "100%",
-                    width:"100%"
+                    width: "100%",
                   }}
-                  onClick = {saveAttempts}
+                  onClick={saveAttempts}
                 >
                   Save & Next
                 </Button>
@@ -380,18 +389,17 @@ export default function () {
                     border: "none",
                     margin: "0.5%",
                     fontSize: "100%",
-                    width:"100%"
+                    width: "100%",
                   }}
-
-                  onClick = {()=>{
-                    saveReview()
+                  onClick={() => {
+                    saveReview();
                   }}
                 >
                   Mark for Review & Next
                 </Button>
               </Col>
             </Row>
-            <Row  style={{margin:"0.5%"}}>
+            <Row style={{ margin: "0.5%" }}>
               <Col xs={6}>
                 <Button
                   style={{
@@ -400,7 +408,7 @@ export default function () {
                     borderColor: "black",
                     margin: "0.5%",
                     fontSize: "100%",
-                    width:"100%"
+                    width: "100%",
                   }}
                 >
                   Clear Response
@@ -414,9 +422,9 @@ export default function () {
                     border: "none",
                     margin: "0.5% 1% 0.5% 0.5%",
                     fontSize: "100%",
-                    width:"100%"
+                    width: "100%",
                   }}
-                  onClick = {submitQuestion}
+                  onClick={submitQuestion}
                 >
                   Submit & Close
                 </Button>
@@ -444,7 +452,7 @@ export default function () {
                 >
                   {numberofUnattempted}
                 </Button>{" "}
-                Not Attempt
+                Unattempt
               </Col>
               <Col xs={6}>
                 <Button
@@ -493,33 +501,38 @@ export default function () {
               <b>Your Questions</b>
             </p>
             <Row>
-              <Col xs={1}></Col>
-              {questions.map((question,i)=>{
-                let check = submission_check.filter((s) => s.question === question.id)
-                let btn_style = null
-                if( check.length === 0 ){
-                  btn_style = style.not_visited
-                }else{
-                  if(check[0].answer_submitted.length === 0 && check[0].subjective_answer === null) btn_style = style.not_answered
-                  else if(check[0].is_reviewed){
-                    btn_style = style.is_reviewed
-                  }
-                  else if(check[0].is_attempted) btn_style = style.is_attempted
+              {questions.map((question, i) => {
+                let check = submission_check.filter(
+                  (s) => s.question === question.id
+                );
+                let btn_style = null;
+                if (check.length === 0) {
+                  btn_style = style.not_visited;
+                } else {
+                  if (
+                    check[0].answer_submitted.length === 0 &&
+                    check[0].subjective_answer === null
+                  )
+                    btn_style = style.not_answered;
+                  else if (check[0].is_reviewed) {
+                    btn_style = style.is_reviewed;
+                  } else if (check[0].is_attempted)
+                    btn_style = style.is_attempted;
                 }
                 return (
-                <Col xs={2}>
-                <Button
-                  style={btn_style}
-                  onClick = {()=>{
-                    setCheckedOptions([])
-                    navigate(`/answer/${test_id}/${question.id}`)
-                  }}
-                >
-                  {i + 1 >= 1 && i + 1 <= 9 ? `0${i + 1}` : i + 1}
-                </Button>{" "}
-              </Col>
-              )})}
-              <Col xs={1}></Col>
+                  <Col xs={2} style={{ margin: "1.5%" }}>
+                    <Button
+                      style={btn_style}
+                      onClick={() => {
+                        setCheckedOptions([]);
+                        navigate(`/answer/${test_id}/${question.id}`);
+                      }}
+                    >
+                      {i + 1 >= 1 && i + 1 <= 9 ? `0${i + 1}` : i + 1}
+                    </Button>{" "}
+                  </Col>
+                );
+              })}
             </Row>
           </center>
         </Col>
@@ -544,7 +557,7 @@ export default function () {
                 margin: "0.5% 0.5% 0.5% 1%",
                 fontSize: "100%",
               }}
-              onClick = {saveAttempts}
+              onClick={saveAttempts}
             >
               Save & Next
             </Button>
@@ -556,9 +569,8 @@ export default function () {
                 margin: "0.5%",
                 fontSize: "100%",
               }}
-
-              onClick = {()=>{
-                saveReview()
+              onClick={() => {
+                saveReview();
               }}
             >
               Mark for Review & Next
@@ -585,7 +597,7 @@ export default function () {
               margin: "0.5% 1% 0.5% 0.5%",
               fontSize: "100%",
             }}
-            onClick = {submitQuestion}
+            onClick={submitQuestion}
           >
             Submit & Close
           </Button>
