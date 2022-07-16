@@ -143,7 +143,7 @@ export default function () {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Row style={{ padding: "0%", height: "50rem" }}>
+      <Row style={{ padding: "0%" }}>
         <Col md={9} style={{ padding: "2%" }}>
           <Row>
             {tests.map((test)=>(
