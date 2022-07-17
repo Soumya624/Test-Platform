@@ -50,8 +50,6 @@ export default function () {
     return q.id == question_id;
   });
 
-  console.log(ques);
-
   let question_paper = ques[0];
 
   var type = question_paper.type;
@@ -73,6 +71,7 @@ export default function () {
   var question = question_paper.name;
 
   useEffect(() => {
+    setSubjectiveAnswer(null)
     setAnswers(null);
     axios
       .get(`/api/submission/${test_id}/`, {
@@ -80,7 +79,9 @@ export default function () {
       })
       .then((res) => {
         console.log(res.data);
-        setSubmissionCheck(res.data);
+        if(res.status === 200){
+          setSubmissionCheck(res.data);
+        }
       });
 
     axios
@@ -89,8 +90,10 @@ export default function () {
       })
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data)
           if (res.data.length > 0) {
             setAnswers(res.data[0]);
+            setSubjectiveAnswer(res.data[0].subjective_answer)
             let options = res.data[0].answer_submitted;
             let list = [];
             for (let op of options) {
@@ -107,13 +110,18 @@ export default function () {
 
   }, [question_id]);
 
+  console.log(subjective_answer)
+
   async function saveAttempts() {
     let data = {
       question: question_id,
       answer_submitted: checkedOptions,
       is_attempted: true,
       subjective_answer: subjective_answer,
+      is_reviewed : false,
     };
+
+    console.log(answers)
 
     if (answers) {
       await axios
@@ -123,7 +131,7 @@ export default function () {
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            setAnswers(null);
+            setAnswers(res.data);
           }
         });
     } else {
@@ -134,7 +142,7 @@ export default function () {
         .then((res) => {
           console.log(res);
           if (res.status === 201) {
-            setAnswers(null);
+            setAnswers(res.data);
           }
         });
     }
@@ -176,35 +184,36 @@ export default function () {
       });
   }
 
-  function saveReview() {
+  async function saveReview() {
     const data = {
       is_attempted: true,
       is_reviewed: true,
     };
+    console.log(answers)
     if (answers) {
-      axios
+      await axios
         .patch(`/api/submission/${test_id}/${question_id}/`, data, {
           headers: headers,
         })
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            setAnswers(null);
+            // setAnswers(null);
           }
         });
     } else {
-      axios
+      await axios
         .post(`/api/submission/${test_id}/${parseInt(question_id)}/`, data, {
           headers: headers,
         })
         .then((res) => {
           if (res.status === 201) {
-            setAnswers(null);
+            // setAnswers(null);
           }
         });
     }
 
-    axios
+  await axios
       .get(`/api/submission/${test_id}/`, {
         headers: headers,
       })
@@ -214,8 +223,6 @@ export default function () {
         setSubmissionCheck(res.data);
       });
   }
-
-  console.log(submission_check);
 
   const style = {
     is_attempted: {
@@ -343,6 +350,7 @@ export default function () {
           >
             <input
               type="text"
+              value = { subjective_answer ? subjective_answer : "" }
               placeholder="Enter Your Answer"
               style={{
                 borderTop: "none",
@@ -510,12 +518,12 @@ export default function () {
                   btn_style = style.not_visited;
                 } else {
                   if (
-                    check[0].answer_submitted.length === 0 &&
-                    check[0].subjective_answer === null
+                    check[0].is_reviewed
                   )
-                    btn_style = style.not_answered;
-                  else if (check[0].is_reviewed) {
                     btn_style = style.is_reviewed;
+                  else if (check[0].answer_submitted.length === 0 &&
+                    check[0].subjective_answer === null) {
+                    btn_style = style.not_answered;
                   } else if (check[0].is_attempted)
                     btn_style = style.is_attempted;
                 }
