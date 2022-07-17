@@ -50,7 +50,7 @@ function App() {
         <Route path="/question/:id" element={<Questions/>} />
         <Route path="/answer/:test_id/:question_id" element={<Answer/>} />
         <Route path="/question/:test_id/:id/edit" element={<QuestionEdit/>} />
-        <Route path="/teacher_result" element={<TeacherResult/>} />
+        <Route path="/teacher_result/:test_id" element={<TeacherResult/>} />
         </Routes>
       </Router>
     </div>

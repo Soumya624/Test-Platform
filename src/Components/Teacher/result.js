@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Navbar,
@@ -17,9 +18,34 @@ import {
   ButtonGroup,
   Table,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Img_Demo from "./../Images/Registration.jpg";
+const headers = {
+  Authorization:
+  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyMzkyLCJpYXQiOjE2NTc3NjYzOTIsImp0aSI6ImIzMDhlZWVkYWU5ZDQ2YmI5ZDQwZjE4YzQ0OGUzYjJlIiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.DfS_Ysnwi0KHawjvob4B4iavz7JPyV1XnGibzYHM8W0",
+  "Content-Type": "application/json",
+}
 export default function () {
+
+  const { test_id } = useParams()
+  const [result, setResult ] = useState([])
+
+  useEffect(()=>{
+    axios
+      .get(`/api/ranking/${test_id}/`, {
+        headers: headers,
+      })
+      .then((res) => {
+        console.log(res.data);
+        if(res.status === 200){
+          setResult(res.data)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },[])
+
   var name = "Adam";
   var subject = "Physics";
   var description =
@@ -76,37 +102,30 @@ export default function () {
         </Container>
       </Navbar>
       <Row style={{ padding: "0%" }}>
-        <Col md={9} style={{ padding: "3%" }}>
+        <Col md={9} style={{ padding: "3%", height : "100vh" }}>
           <Table striped bordered hover>
             <thead>
               <tr>
                 <th>Test Id</th>
-                <th>Student Name</th>
-                <th>Attempt</th>
+                <th>Student Email</th>
                 <th>Marks</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>2</td>
-                <td>
-                  <input
-                    value="57"
-                    style={{ border: "none", backgroundColor: "transparent" }}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Jacob</td>
-                <td>1</td>
-                <input
-                    value="62"
-                    style={{ border: "none", backgroundColor: "transparent" }}
-                  />
-              </tr>
+              {result.map((r,i)=>{
+                return (
+                  <tr>
+                  <td>{i+1}</td>
+                  <td>{r.student.user.username}</td>
+                  <td>
+                    <input
+                      value={r.marks_obtained}
+                      style={{ border: "none", backgroundColor: "transparent" }}
+                    />
+                  </td>
+                </tr>
+                )
+              })}
             </tbody>
           </Table>
           <br />

@@ -247,7 +247,7 @@ export default function () {
               variant="outline-primary"
               style={{ borderRadius: "20px", margin: "0.5%" }}
               onClick={() => {
-                viewResult(test_details.id);
+                window.location = `/teacher_result/${test_details.id}`
               }}
             >
               View Result
