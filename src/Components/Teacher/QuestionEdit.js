@@ -382,6 +382,12 @@ export default function () {
               >
                 Add Question
             </Button>
+            <Button variant="outline-primary"
+              style={{ borderRadius: "20px", margin: "0.5%" }}
+              href = '/teacher'
+              >
+                Go Back
+            </Button>
           </center>
         </Col>
         <Col

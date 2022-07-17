@@ -18,9 +18,11 @@ import {
   Modal,
   ButtonGroup,
 } from "react-bootstrap";
+import moment from "moment";
 import { Link } from "react-router-dom";
 import Img_Demo from "./Images/Registration.jpg";
 import { getTestById } from "./Teacher/actions";
+
 export default function () {
   var name = "Adam";
   var subject = "Physics";
@@ -161,9 +163,8 @@ export default function () {
                     <Card.Body>
                       <Card.Title>{test.name}</Card.Title>
                       <Card.Text style={{ textAlign: "justify" }}>
-                        {test.exam_start_time && test.exam_start_time
-                          ? `${test.exam_start_time} - ${test.exam_end_time}`
-                          : ""}
+                        Students are requested to click on the button below to
+                        start the exam
                       </Card.Text>
                       <br />
                       <Button
@@ -184,7 +185,18 @@ export default function () {
                         Give Test
                       </Button>
                     </Card.Body>
-                    <Card.Footer className="text-muted">{time}</Card.Footer>
+                    <Card.Footer className="text-muted">
+                      {/* {test.exam_start_time && test.exam_start_time
+                        ? `${test.exam_start_time} - ${test.exam_end_time}`
+                        : ""} */}
+                      {moment(test.exam_start_time).format(
+                        "MMMM Do YYYY hh:mm:ss"
+                      )}{" "}
+                      -{" "}
+                      {moment(test.exam_end_time).format(
+                        "MMMM Do YYYY hh:mm:ss"
+                      )}
+                    </Card.Footer>
                   </Card>
                 </Col>
               );
@@ -239,7 +251,10 @@ export default function () {
         <Modal.Body style={{ padding: "5%" }}>
           <center>
             <h3>{test_name}</h3>
-            <p>{description}</p>
+            <p>
+              Students are requested to click on the button below to start the
+              exam
+            </p>
           </center>
           <br />
           <p>
