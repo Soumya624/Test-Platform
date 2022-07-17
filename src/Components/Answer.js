@@ -378,7 +378,7 @@ export default function () {
                   }}
                   onClick={saveAttempts}
                 >
-                  Save & Next
+                  Save
                 </Button>
               </Col>
               <Col xs={6}>
@@ -395,12 +395,12 @@ export default function () {
                     saveReview();
                   }}
                 >
-                  Mark for Review & Next
+                  Mark for Review
                 </Button>
               </Col>
             </Row>
             <Row style={{ margin: "0.5%" }}>
-              <Col xs={6}>
+              {/* <Col xs={6}>
                 <Button
                   style={{
                     backgroundColor: "#ffffff",
@@ -413,7 +413,7 @@ export default function () {
                 >
                   Clear Response
                 </Button>
-              </Col>
+              </Col> */}
               <Col xs={6}>
                 <Button
                   style={{
@@ -559,7 +559,7 @@ export default function () {
               }}
               onClick={saveAttempts}
             >
-              Save & Next
+              Save
             </Button>
             <Button
               style={{
@@ -573,9 +573,9 @@ export default function () {
                 saveReview();
               }}
             >
-              Mark for Review & Next
+              Mark for Review
             </Button>
-            <Button
+            {/* <Button
               style={{
                 backgroundColor: "#ffffff",
                 color: "black",
@@ -585,7 +585,7 @@ export default function () {
               }}
             >
               Clear Response
-            </Button>
+            </Button> */}
           </div>
         </Col>
         <Col xs={4} style={{ textAlign: "right" }}>

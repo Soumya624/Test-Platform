@@ -385,8 +385,9 @@ export default function () {
             <Button
               variant="outline-primary"
               style={{ borderRadius: "20px", margin: "0.5%" }}
+              href="/teacher"
             >
-              Publish Changes
+              Go Back
             </Button>
           </center>
         </Col>
