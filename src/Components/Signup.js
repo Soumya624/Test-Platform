@@ -14,6 +14,7 @@ import {
   Row,
   Col,
   Modal,
+  FormControl,
 } from "react-bootstrap";
 import Img_Registration from "./Images/Registration.png";
 function Login() {
@@ -29,6 +30,7 @@ function Login() {
     setShow1(true);
     setShow(false);
   };
+  var currentvalue = "";
   return (
     <div
       style={{
@@ -96,10 +98,65 @@ function Login() {
                 </Col>
               </Row>
               <br />
-              <Form.Group controlId="formBasicPassword">
+              <Row>
+                <Col md="6">
+                  <Form.Group controlId="formBasicEmail">
+                    <FormControl
+                      type="text"
+                      name="discipline"
+                      list="discipline"
+                      placeholder="Enter Your Discipline"
+                      style={{ borderRadius: "20px" }}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                        currentvalue = e.target.value;
+                        console.log(currentvalue);
+                      }}
+                    />
+                    <datalist id="discipline">
+                      <option value="Agriculture" />
+                      <option value="Allied Health Sciences" />
+                      <option value="Anumation, VFX and Gaming Design" />
+                      <option value="Architecture" />
+                      <option value="Arts" />
+                      <option value="Basic Science" />
+                      <option value="Commerce" />
+                      <option value="Computer Application" />
+                      <option value="Dental" />
+                      <option value="Design" />
+                      <option value="Economics" />
+                      <option value="Education" />
+                      <option value="Engineering" />
+                      <option value="Food Science" />
+                      <option value="Law" />
+                      <option value="Management" />
+                      <option value="Mass Communication" />
+                      <option value="Medical" />
+                      <option value="Nursing" />
+                      <option value="Pharmacy" />
+                      <option value="Visual Arts" />
+                    </datalist>
+                  </Form.Group>
+                </Col>
+                <Col md="6">
+                <Form.Group controlId="formBasicEmail">
+                    <FormControl
+                      type="text"
+                      name="programme"
+                      placeholder="Enter Your Programme"
+                      style={{ borderRadius: "20px" }}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <br />
+              <Form.Group controlId="formBasicState">
                 <Form.Control
-                  type="password"
-                  placeholder="Enter Password"
+                  type="email"
+                  placeholder="Enter Your Sate"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
                     console.log(e.target.value);
@@ -107,10 +164,10 @@ function Login() {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formBasicPassword">
+              <Form.Group controlId="formBasicCity">
                 <Form.Control
-                  type="password"
-                  placeholder="Re-Enter Password"
+                  type="email"
+                  placeholder="Enter Your City"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
                     console.log(e.target.value);
@@ -118,12 +175,13 @@ function Login() {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formBasicCheckbox">
-                <Form.Check
-                  type="checkbox"
-                  label="Check if You Are a Student"
-                />
-              </Form.Group>
+              <p>
+                Want to Register as an Admin?
+                <a href="/signupadmin" style={{ textDecoration: "none" }}>
+                  {" "}
+                  Click Here
+                </a>
+              </p>
               <br />
               <center>
                 <Button
@@ -164,7 +222,7 @@ function Login() {
           <Form.Group controlId="formBasicEmail">
             <Form.Control
               type="email"
-              placeholder="Enter the OTP"
+              placeholder="Enter the OTP Sent to Your Mobile Number"
               style={{ borderRadius: "20px" }}
               onChange={(e) => {
                 console.log(e.target.value);

@@ -25,6 +25,7 @@ import Questions from "./Components/Teacher/Question";
 import Answer from "./Components/Answer";
 import QuestionEdit from "./Components/Teacher/QuestionEdit";
 import TeacherResult from "./Components/Teacher/result";
+import SignupAdmin from "./Components/SignupAdmin";
 function App() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -51,6 +52,7 @@ function App() {
         <Route path="/answer/:test_id/:question_id" element={<Answer/>} />
         <Route path="/question/:test_id/:id/edit" element={<QuestionEdit/>} />
         <Route path="/teacher_result/:test_id" element={<TeacherResult/>} />
+        <Route path="/signupadmin" element={<SignupAdmin/>} />
         </Routes>
       </Router>
     </div>

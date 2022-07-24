@@ -58,10 +58,10 @@ function Login() {
           </Col>
           <Col md="6">
             <Form>
-              <Form.Group controlId="formBasicEmail">
+              <Form.Group controlId="formBasicName">
                 <Form.Control
-                  type="name"
-                  placeholder="Enter your Email ID"
+                  type="email"
+                  placeholder="Enter Your Name"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
                     console.log(e.target.value);
@@ -69,10 +69,37 @@ function Login() {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formBasicNumber">
+              <Row>
+                <Col md="6">
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter Your Email ID"
+                      style={{ borderRadius: "20px" }}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md="6">
+                  <Form.Group controlId="formBasicNumber">
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter Phone Number"
+                      style={{ borderRadius: "20px" }}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <br />
+              <Form.Group controlId="formBasicState">
                 <Form.Control
-                  type="text"
-                  placeholder="Enter Your Mobile Number"
+                  type="email"
+                  placeholder="Enter Your Sate"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
                     console.log(e.target.value);
@@ -80,8 +107,15 @@ function Login() {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Remember Me" />
+              <Form.Group controlId="formBasicCity">
+                <Form.Control
+                  type="email"
+                  placeholder="Enter Your City"
+                  style={{ borderRadius: "20px" }}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                  }}
+                />
               </Form.Group>
               <br />
               <center>
@@ -99,10 +133,10 @@ function Login() {
                   Cancel
                 </Button>
                 <p>
-                  Don't Have an Account?
-                  <a href="/signup" style={{ textDecoration: "none" }}>
+                  Already Have an Account?
+                  <a href="/login" style={{ textDecoration: "none" }}>
                     {" "}
-                    Signup
+                    Login
                   </a>
                 </p>
               </center>
@@ -135,7 +169,7 @@ function Login() {
             <Button
               variant="outline-primary"
               style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-              href="/teacher"
+              href="/login"
             >
               Submit
             </Button>
