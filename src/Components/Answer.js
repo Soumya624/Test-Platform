@@ -17,21 +17,46 @@ import {
   Modal,
   ButtonGroup,
 } from "react-bootstrap";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import Img_Demo from "./Images/Registration.jpg";
 import { getQuestionById } from "./Teacher/actions";
 import axios from "axios";
+import getCookie from "../getCookies";
+
+
+let access = getCookie('access_token')
+let user = JSON.parse(localStorage.getItem("user"));
+
 
 const headers = {
   Authorization:
-    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyNTE1LCJpYXQiOjE2NTc3NjY1MTUsImp0aSI6IjIyNzE5MGUzYmQzYzQ3M2VhZGNiOTQ3Yjc3ZDE4Mjk3IiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.-hQv6xMU_vy3xB0TJCIJrli4OxUJ4BDfkLxm9Tr4VZA",
+  `Bearer ${access}`,
   "Content-Type": "application/json",
 };
 export default function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { test_id, question_id } = useParams();
 
+  if(user.user_type === "teacher"){
+    return (
+      <>
+        <h1
+          style={{
+            background: "rgba(255,255,255,0.5)",
+            textAlign: "center",
+            textTransform: "uppercase",
+            height: "100vh",
+          }}
+        >
+          You are not allowed to access the Page
+        </h1>
+       <Navigate to={"/"} />
+       </>
+		);
+  }
+
+
+  const { test_id, question_id } = useParams();
   // useEffect(()=>{
   //   dispatch(
   //     getQuestionById(question_id,(res)=>{

@@ -19,10 +19,15 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import getCookie from "../../getCookies";
+import logout from "../../logout";
 import Img_Demo from "./../Images/Registration.jpg";
+
+let access = getCookie('access_token')
+
 const headers = {
   Authorization:
-  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyMzkyLCJpYXQiOjE2NTc3NjYzOTIsImp0aSI6ImIzMDhlZWVkYWU5ZDQ2YmI5ZDQwZjE4YzQ0OGUzYjJlIiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.DfS_Ysnwi0KHawjvob4B4iavz7JPyV1XnGibzYHM8W0",
+  `Bearer ${access}`,
   "Content-Type": "application/json",
 }
 export default function () {
@@ -92,7 +97,7 @@ export default function () {
                 variant="outline-primary"
                 style={{ borderRadius: "20px" }}
                 onClick={() => {
-                  window.location.href = "/login";
+                  logout()
                 }}
               >
                 Logout Now

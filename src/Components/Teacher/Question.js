@@ -20,6 +20,7 @@ import {
 } from "react-bootstrap";
 import { addQuestion, getTestById } from "./actions";
 import { Link, useParams } from "react-router-dom";
+import logout from "../../logout";
 const InputOption = ({
   setOptionIsCorrect,
   setOptionName,
@@ -222,7 +223,7 @@ export default function () {
                 variant="outline-primary"
                 style={{ borderRadius: "20px" }}
                 onClick={() => {
-                  window.location.href = "/login";
+                  logout()
                 }}
               >
                 Logout Now

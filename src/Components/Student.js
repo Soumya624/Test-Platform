@@ -19,25 +19,52 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Img_Demo from "./Images/Registration.jpg";
 import { getTestById } from "./Teacher/actions";
+import getCookie from "../getCookies";
+import logout from "../logout";
+
+let access = getCookie("access_token");
+let user = JSON.parse(localStorage.getItem("user"));
+
+const headers = {
+  Authorization:
+    `Bearer ${access}`,
+  "Content-Type": "application/json",
+};
 
 export default function () {
-  var name = "Adam";
-  var subject = "Physics";
-  var description = "2022-04-13 10:00 AM to 2022-04-14 10:00 AM";
-  var time = "2 Days Ago";
-  var name = "Adam Smith";
-  var identity = "Student";
-  var email = "adamsmith@gmail.com";
-  var marks_obtained = "";
-  var phone = "1234567890";
-  const headers = {
-    Authorization:
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5MDYyNTE1LCJpYXQiOjE2NTc3NjY1MTUsImp0aSI6IjIyNzE5MGUzYmQzYzQ3M2VhZGNiOTQ3Yjc3ZDE4Mjk3IiwidXNlcl9pZCI6MzMsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzA0ZGV5QGdtYWlsLmNvbSJ9.-hQv6xMU_vy3xB0TJCIJrli4OxUJ4BDfkLxm9Tr4VZA",
-    "Content-Type": "application/json",
-  };
+
+  if(user.user_type === "teacher"){
+    return (
+      <>
+        <h1
+          style={{
+            background: "rgba(255,255,255,0.5)",
+            textAlign: "center",
+            textTransform: "uppercase",
+            height: "100vh",
+          }}
+        >
+          You are not allowed to access the Page
+        </h1>
+       <Navigate to={"/teacher"} />
+       </>
+		);
+  }
+
+
+  var name = user.name;
+  // var subject = "Physics";
+  // var description = "2022-04-13 10:00 AM to 2022-04-14 10:00 AM";
+  // var time = "2 Days Ago";
+  // var name = "Adam Smith";
+  var identity = user.user_type.toUpperCase();
+  var email = user.email;
+  // var marks_obtained = "";
+  var phone = user.phone;
+  
 
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -143,7 +170,7 @@ export default function () {
                 variant="outline-primary"
                 style={{ borderRadius: "20px" }}
                 onClick={() => {
-                  window.location.href = "/login";
+                  logout();
                 }}
               >
                 Logout Now
@@ -241,9 +268,9 @@ export default function () {
             <br />
             <br />
 
-            <Button variant="outline-primary" style={{ borderRadius: "20px" }}>
+            {/* <Button variant="outline-primary" style={{ borderRadius: "20px" }}>
               Edit Profile
-            </Button>
+            </Button> */}
           </center>
         </Col>
       </Row>

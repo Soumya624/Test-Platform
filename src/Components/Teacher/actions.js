@@ -1,9 +1,12 @@
 import axios from "axios";
+import getCookie from "../../getCookies";
 import { ADD_QUESTION, ADD_TEST, GET_QUESTION, GET_TEST, GET_TESTS } from "./types";
+
+let access = getCookie("access_token");
 
 const headers = {
     Authorization:
-    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU4ODIwMDg5LCJpYXQiOjE2NTc1MjQwODksImp0aSI6IjIwMWIwNTg4ZDM5MzRiZDY5MDE2ZDA5YTZiYmNjMDA3IiwidXNlcl9pZCI6MzIsInVzZXJuYW1lIjoic3ViaG9qaXQ5NzAzZGV5QGdtYWlsLmNvbSIsImVtYWlsIjoic3ViaG9qaXQ5NzAzZGV5QGdtYWlsLmNvbSJ9.oxqKKmEk_ZHFbXCUpOi2yqU3TuywbjGS122K61WBS2M",
+    `Bearer ${access}`,
     "Content-Type": "application/json",
 }
 

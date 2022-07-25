@@ -15,6 +15,7 @@ import {
   Col,
   Modal,
   FormControl,
+  Alert,
 } from "react-bootstrap";
 import Img_Registration from "./Images/Registration.png";
 import axios from "axios";
@@ -42,6 +43,7 @@ function Login() {
   const [user_type, setUser_type] = useState(null);
   const [discipline, setDiscipline] = useState(null);
   const [programme, setProgramme] = useState(null);
+  const [ msg, setMsg ] = useState(null)
 
   function submit(e) {
     e.preventDefault();
@@ -63,9 +65,29 @@ function Login() {
       .then((res) => {
         console.log(res);
         console.log(res.data);
+        setMsg({
+          is_error : false,
+          msg : "Success"
+        })
+
+        setTimeout(()=>{
+          setMsg(null)
+        },1000)
+
+        setTimeout(()=>{
+          window.location = '/login'
+        })
       })
       .catch((err) => {
         console.log(err);
+        setMsg({
+          is_error : true,
+          msg : JSON.stringify(err.response.data)
+        })
+
+        setTimeout(()=>{
+          setMsg(null)
+        },1000)
       });
   }
   return (
@@ -245,6 +267,7 @@ function Login() {
               </p>
               <br />
               <center>
+              { msg && <Alert variant={msg.is_error ? "danger" : "success"}>{msg.msg}</Alert>}
                 <Button
                   variant="outline-primary"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}

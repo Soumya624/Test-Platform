@@ -19,7 +19,9 @@ import {
   Alert,
 } from "react-bootstrap";
 import { addQuestion, editQuestion, getQuestionById, getTestById } from "./actions";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, Navigate } from "react-router-dom";
+import logout from "../../logout";
+let user = JSON.parse(localStorage.getItem("user"));
 const InputOption = ({
   setOptionIsCorrect,
   setOptionName,
@@ -96,6 +98,26 @@ var question_data = {
 export default function () {
   const dispatch = useDispatch();
   const { test_id, id } = useParams();
+
+  var identity = user.user_type.toUpperCase();
+	if (identity === "STUDENT") {
+		return (
+      <>
+        <h1
+          style={{
+            background: "rgba(255,255,255,0.5)",
+            textAlign: "center",
+            textTransform: "uppercase",
+            height: "100vh",
+          }}
+        >
+          You are not allowed to access the Page
+        </h1>
+       <Navigate to={"/"} />
+       </>
+		);
+	}
+
 
   useEffect(() => {
     // alert("Please Click on The Save Button After Adding an Option");
@@ -257,7 +279,7 @@ export default function () {
                 variant="outline-primary"
                 style={{ borderRadius: "20px" }}
                 onClick={() => {
-                  window.location.href = "/login";
+                  logout()
                 }}
               >
                 Logout Now

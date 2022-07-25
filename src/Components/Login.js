@@ -14,6 +14,7 @@ import {
   Row,
   Col,
   Modal,
+  Alert,
 } from "react-bootstrap";
 import Img_Registration from "./Images/Registration.png";
 import axios from "axios";
@@ -35,8 +36,6 @@ function Login() {
       .catch((err) => {
         console.log(err);
       });
-
-    // setShow1(false);
   };
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
@@ -48,6 +47,16 @@ function Login() {
   const [password, setPassword] = useState(null);
   const [otp, setOtp] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [ msg, setMsg ] = useState(null)
+
+
+  function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
   function submit(e) {
     e.preventDefault();
     let dataTwo = {
@@ -65,20 +74,79 @@ function Login() {
       .then((res) => {
         console.log(res);
         console.log(res.data);
+        if(res.data.status == false)
+        setMsg(
+          {
+            is_error : !res.data.status,
+            msg : res.data.detail
+          }
+        )
+        setTimeout(()=>{
+          setMsg(null)
+        },1000)
       })
       .catch((err) => {
         console.log(err);
+        setMsg(
+          {
+            is_error : true,
+            msg : "Error"
+          }
+        )
+
+        setTimeout(()=>{
+          setMsg(null)
+        },1000)
       });
+
     axios
       .post("/auth/login/", dataThree)
       .then((res) => {
         console.log(res);
         console.log(res.data);
+
+        setMsg(
+          {
+            is_error : false,
+            msg : "Successfully logged in"
+          }
+        )
+
+        let token = res.data.token
+        let user_data = res.data.user
+
+        localStorage.setItem("user" , JSON.stringify(user_data))
+
+        setCookie(`access_token` ,`${token.access}`,1);
+        setCookie(`refresh` ,`${token.refresh}`,1);
+
+        setTimeout(()=>{
+          setMsg(null)
+        },1000)
+        
+        let user_type = user_data.user_type
+
+        window.location = `/${user_type}`
+
+
       })
       .catch((err) => {
         console.log(err);
+        setMsg(
+          {
+            is_error : true,
+            msg : "Error"
+          }
+        )
+
+        setTimeout(()=>{
+          setMsg(null)
+        },1000)
       });
   }
+
+
+
   return (
     <div
       style={{
@@ -137,6 +205,7 @@ function Login() {
               </Form.Group>
               <br />
               <center>
+              { msg && <Alert variant={msg.is_error ? "danger" : "success"}>{msg.msg}</Alert>}
                 <Button
                   variant="outline-primary"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
@@ -185,6 +254,7 @@ function Login() {
           </Form.Group>
           <br />
           <center>
+            { msg && <Alert variant={msg.is_error ? "danger" : "success"}>{msg.msg}</Alert>}
             <Button
               variant="outline-primary"
               style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
