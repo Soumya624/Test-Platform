@@ -1,4 +1,5 @@
 import axios from 'axios'
+import deleteAllCookies from './deleteCookies'
 import getCookie from './getCookies'
 
 let refresh = getCookie('refresh')
@@ -17,6 +18,7 @@ export default function logout(){
         headers : headers
     })
     .then((res)=>{
+        deleteAllCookies()
         window.location = '/'
     })
 }
