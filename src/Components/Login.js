@@ -16,12 +16,27 @@ import {
   Modal,
 } from "react-bootstrap";
 import Img_Registration from "./Images/Registration.png";
+import axios from "axios";
 function Login() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    setShow(true);
-    setShow1(false);
+    let dataOne = {
+      phone: phone,
+    };
+    console.log(dataOne);
+    axios
+      .post("/auth/verify/", dataOne)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        setShow(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // setShow1(false);
   };
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
@@ -29,6 +44,41 @@ function Login() {
     setShow1(true);
     setShow(false);
   };
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [otp, setOtp] = useState(null);
+  const [phone, setPhone] = useState(null);
+  function submit(e) {
+    e.preventDefault();
+    let dataTwo = {
+      phone: phone,
+      otp: otp,
+    };
+    let dataThree = {
+      username: username,
+      password: otp,
+    };
+    console.log(dataTwo);
+    console.log(dataThree);
+    axios
+      .post("/auth/verify-otp/", dataTwo)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    axios
+      .post("/auth/login/", dataThree)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <div
       style={{
@@ -64,7 +114,8 @@ function Login() {
                   placeholder="Enter your Email ID"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
-                    console.log(e.target.value);
+                    e.preventDefault();
+                    setUsername(e.target.value);
                   }}
                 />
               </Form.Group>
@@ -75,7 +126,8 @@ function Login() {
                   placeholder="Enter Your Mobile Number"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
-                    console.log(e.target.value);
+                    e.preventDefault();
+                    setPhone(e.target.value);
                   }}
                 />
               </Form.Group>
@@ -126,7 +178,8 @@ function Login() {
               placeholder="Enter the OTP Sent to Your Mobile Number"
               style={{ borderRadius: "20px" }}
               onChange={(e) => {
-                console.log(e.target.value);
+                e.preventDefault();
+                setOtp(e.target.value);
               }}
             />
           </Form.Group>
@@ -135,7 +188,7 @@ function Login() {
             <Button
               variant="outline-primary"
               style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-              href="/teacher"
+              onClick={submit}
             >
               Submit
             </Button>

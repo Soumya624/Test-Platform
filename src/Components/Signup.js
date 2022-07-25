@@ -17,6 +17,7 @@ import {
   FormControl,
 } from "react-bootstrap";
 import Img_Registration from "./Images/Registration.png";
+import axios from "axios";
 function Login() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -31,6 +32,42 @@ function Login() {
     setShow(false);
   };
   var currentvalue = "";
+  const [first_name, setFirst_name] = useState(null);
+  const [last_name, setLast_name] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [phone_number, setPhone_number] = useState(null);
+  const [state, setState] = useState(null);
+  const [city, setCity] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [user_type, setUser_type] = useState(null);
+  const [discipline, setDiscipline] = useState(null);
+  const [programme, setProgramme] = useState(null);
+
+  function submit(e) {
+    e.preventDefault();
+    let data = {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      phone_number: phone_number,
+      user_type: "student",
+      city: city,
+      state: state,
+      username: email,
+      discipline: discipline,
+      programme: programme,
+    };
+    console.log(data);
+    axios
+      .post("/auth/register/", data)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <div
       style={{
@@ -61,14 +98,34 @@ function Login() {
           <Col md="6">
             <Form>
               <Form.Group controlId="formBasicName">
-                <Form.Control
-                  type="email"
-                  placeholder="Enter Your Name"
-                  style={{ borderRadius: "20px" }}
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                  }}
-                />
+                <Row>
+                  <Col md="6">
+                    <Form.Group controlId="formBasicFirstName">
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Your First Name"
+                        style={{ borderRadius: "20px" }}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          setFirst_name(e.target.value);
+                        }}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md="6">
+                    <Form.Group controlId="formBasicLastName">
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Your Last Name"
+                        style={{ borderRadius: "20px" }}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          setLast_name(e.target.value);
+                        }}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
               </Form.Group>
               <br />
               <Row>
@@ -79,7 +136,8 @@ function Login() {
                       placeholder="Enter Your Email ID"
                       style={{ borderRadius: "20px" }}
                       onChange={(e) => {
-                        console.log(e.target.value);
+                        e.preventDefault();
+                        setEmail(e.target.value);
                       }}
                     />
                   </Form.Group>
@@ -87,11 +145,12 @@ function Login() {
                 <Col md="6">
                   <Form.Group controlId="formBasicNumber">
                     <Form.Control
-                      type="email"
+                      type="text"
                       placeholder="Enter Phone Number"
                       style={{ borderRadius: "20px" }}
                       onChange={(e) => {
-                        console.log(e.target.value);
+                        e.preventDefault();
+                        setPhone_number(e.target.value);
                       }}
                     />
                   </Form.Group>
@@ -100,7 +159,7 @@ function Login() {
               <br />
               <Row>
                 <Col md="6">
-                  <Form.Group controlId="formBasicEmail">
+                  <Form.Group controlId="formBasicDiscipline">
                     <FormControl
                       type="text"
                       name="discipline"
@@ -108,9 +167,8 @@ function Login() {
                       placeholder="Enter Your Discipline"
                       style={{ borderRadius: "20px" }}
                       onChange={(e) => {
-                        console.log(e.target.value);
-                        currentvalue = e.target.value;
-                        console.log(currentvalue);
+                        e.preventDefault();
+                        setDiscipline(e.target.value);
                       }}
                     />
                     <datalist id="discipline">
@@ -139,14 +197,15 @@ function Login() {
                   </Form.Group>
                 </Col>
                 <Col md="6">
-                <Form.Group controlId="formBasicEmail">
+                  <Form.Group controlId="formBasicProgramme">
                     <FormControl
                       type="text"
                       name="programme"
                       placeholder="Enter Your Programme"
                       style={{ borderRadius: "20px" }}
                       onChange={(e) => {
-                        console.log(e.target.value);
+                        e.preventDefault();
+                        setProgramme(e.target.value);
                       }}
                     />
                   </Form.Group>
@@ -155,22 +214,24 @@ function Login() {
               <br />
               <Form.Group controlId="formBasicState">
                 <Form.Control
-                  type="email"
-                  placeholder="Enter Your Sate"
+                  type="text"
+                  placeholder="Enter Your State"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
-                    console.log(e.target.value);
+                    e.preventDefault();
+                    setState(e.target.value);
                   }}
                 />
               </Form.Group>
               <br />
               <Form.Group controlId="formBasicCity">
                 <Form.Control
-                  type="email"
+                  type="text"
                   placeholder="Enter Your City"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
-                    console.log(e.target.value);
+                    e.preventDefault();
+                    setCity(e.target.value);
                   }}
                 />
               </Form.Group>
@@ -187,7 +248,7 @@ function Login() {
                 <Button
                   variant="outline-primary"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-                  onClick={handleShow}
+                  onClick={submit}
                 >
                   Submit
                 </Button>
@@ -248,6 +309,27 @@ function Login() {
           </center>
         </Modal.Body>
       </Modal>
+      {/* {
+        "username":"subhojit9708dey@gmail.com",
+        "first_name" : "Subhojit--1",
+        "last_name" : "Dey-1",
+        "email" : "subhojit9708dey@gmail.com",
+        "phone_number" : 9876543210,
+        "user_type" : "teacher",
+        "city" : "amskdmals"
+        http://127.0.0.1:8000/auth/register/
+        http://127.0.0.1:8000/auth/verify/
+        http://127.0.0.1:8000/auth/verify-otp/
+        http://127.0.0.1:8000/auth/login/
+        {
+          "phone" : "9876543210",
+          "otp" : "3269"
+        }
+        {
+          "username":"subhojit9705dey@gmail.com",
+          "password" : "9857"
+        }
+      } */}
     </div>
   );
 }
