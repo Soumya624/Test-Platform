@@ -22,22 +22,20 @@ import Img_Demo from "./Images/Registration.jpg";
 import { getQuestionById } from "./Teacher/actions";
 import axios from "axios";
 import getCookie from "../getCookies";
+import { useCountdownTimer } from "use-countdown-timer";
 
-
-let access = getCookie('access_token')
+let access = getCookie("access_token");
 let user = JSON.parse(localStorage.getItem("user"));
 
-
 const headers = {
-  Authorization:
-  `Bearer ${access}`,
+  Authorization: `Bearer ${access}`,
   "Content-Type": "application/json",
 };
 export default function () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  if(user.user_type === "teacher"){
+  if (user.user_type === "teacher") {
     return (
       <>
         <h1
@@ -50,11 +48,10 @@ export default function () {
         >
           You are not allowed to access the Page
         </h1>
-       <Navigate to={"/"} />
-       </>
-		);
+        <Navigate to={"/"} />
+      </>
+    );
   }
-
 
   const { test_id, question_id } = useParams();
   // useEffect(()=>{
@@ -96,7 +93,7 @@ export default function () {
   var question = question_paper.name;
 
   useEffect(() => {
-    setSubjectiveAnswer(null)
+    setSubjectiveAnswer(null);
     setAnswers(null);
     axios
       .get(`/api/submission/${test_id}/`, {
@@ -104,21 +101,21 @@ export default function () {
       })
       .then((res) => {
         console.log(res.data);
-        if(res.status === 200){
+        if (res.status === 200) {
           setSubmissionCheck(res.data);
         }
       });
-
+    start();
     axios
       .get(`/api/submission/${test_id}/${question_id}`, {
         headers: headers,
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data)
+          console.log(res.data);
           if (res.data.length > 0) {
             setAnswers(res.data[0]);
-            setSubjectiveAnswer(res.data[0].subjective_answer)
+            setSubjectiveAnswer(res.data[0].subjective_answer);
             let options = res.data[0].answer_submitted;
             let list = [];
             for (let op of options) {
@@ -132,10 +129,9 @@ export default function () {
       .catch((err) => {
         console.log(err);
       });
-
   }, [question_id]);
 
-  console.log(subjective_answer)
+  console.log(subjective_answer);
 
   async function saveAttempts() {
     let data = {
@@ -143,10 +139,10 @@ export default function () {
       answer_submitted: checkedOptions,
       is_attempted: true,
       subjective_answer: subjective_answer,
-      is_reviewed : false,
+      is_reviewed: false,
     };
 
-    console.log(answers)
+    console.log(answers);
 
     if (answers) {
       await axios
@@ -214,7 +210,7 @@ export default function () {
       is_attempted: true,
       is_reviewed: true,
     };
-    console.log(answers)
+    console.log(answers);
     if (answers) {
       await axios
         .patch(`/api/submission/${test_id}/${question_id}/`, data, {
@@ -238,7 +234,7 @@ export default function () {
         });
     }
 
-  await axios
+    await axios
       .get(`/api/submission/${test_id}/`, {
         headers: headers,
       })
@@ -272,7 +268,9 @@ export default function () {
       border: "none",
     },
   };
-
+  const { countdown, start, reset, pause, isRunning } = useCountdownTimer({
+    timer: 1000 * 5,
+  });
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
       <Navbar
@@ -375,7 +373,7 @@ export default function () {
           >
             <input
               type="text"
-              value = { subjective_answer ? subjective_answer : "" }
+              value={subjective_answer ? subjective_answer : ""}
               placeholder="Enter Your Answer"
               style={{
                 borderTop: "none",
@@ -472,6 +470,9 @@ export default function () {
             padding: "2%",
           }}
         >
+          <p>
+            <b>Time Remaining: {countdown}</b>
+          </p>
           <Row style={{ padding: "4%" }}>
             <Row style={{ padding: "2%" }}>
               <Col xs={6}>
@@ -542,12 +543,11 @@ export default function () {
                 if (check.length === 0) {
                   btn_style = style.not_visited;
                 } else {
-                  if (
-                    check[0].is_reviewed
-                  )
-                    btn_style = style.is_reviewed;
-                  else if (check[0].answer_submitted.length === 0 &&
-                    check[0].subjective_answer === null) {
+                  if (check[0].is_reviewed) btn_style = style.is_reviewed;
+                  else if (
+                    check[0].answer_submitted.length === 0 &&
+                    check[0].subjective_answer === null
+                  ) {
                     btn_style = style.not_answered;
                   } else if (check[0].is_attempted)
                     btn_style = style.is_attempted;
