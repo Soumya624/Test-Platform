@@ -373,7 +373,7 @@ export default function () {
               </datalist>
             </Form.Group>
 			<br/>
-			<Form.Label>Specify Time (In Seconds)</Form.Label>
+			{/* <Form.Label>Specify Time (In Seconds)</Form.Label>
             <Form.Control
               type="text"
               autoComplete="off"
@@ -382,7 +382,7 @@ export default function () {
 				e.preventDefault();
               }}
             />
-			<br/>
+			<br/> */}
             <div>
               <Row>
                 <Col xs={6}>
