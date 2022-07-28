@@ -22,7 +22,7 @@ import {
   FormControl
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Img_Demo from "../Images/Registration.jpg";
+import Img_Demo from "../Images/images.png";
 import TestCreated from "./TestCreated";
 import getCookie from "../../getCookies";
 import logout from "../../logout";
@@ -222,7 +222,7 @@ export default function () {
             </p>
             <p style={{ marginTop: "0", marginBottom: "0" }}>
               <b>Identity: </b>
-              {identity}
+              Admin
             </p>
             <p style={{ marginTop: "0", marginBottom: "0" }}>
               <b>Phone: </b>

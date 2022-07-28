@@ -20,7 +20,7 @@ import {
 } from "react-bootstrap";
 import moment from "moment";
 import { Link, Navigate } from "react-router-dom";
-import Img_Demo from "./Images/Registration.jpg";
+import Img_Demo from "./Images/images.png";
 import { getTestById } from "./Teacher/actions";
 import getCookie from "../getCookies";
 import logout from "../logout";
@@ -261,7 +261,7 @@ export default function () {
             </p>
             <p style={{ marginTop: "0", marginBottom: "0" }}>
               <b>Identity: </b>
-              {identity}
+              Student
             </p>
             <p style={{ marginTop: "0", marginBottom: "0" }}>
               <b>Phone: </b>

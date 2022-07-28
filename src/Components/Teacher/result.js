@@ -21,7 +21,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import getCookie from "../../getCookies";
 import logout from "../../logout";
-import Img_Demo from "./../Images/Registration.jpg";
+import Img_Demo from "./../Images/images.png";
 
 let access = getCookie('access_token')
 
@@ -174,7 +174,7 @@ export default function () {
             </p>
             <p style={{ marginTop: "0", marginBottom: "0" }}>
               <b>Identity: </b>
-              {identity}
+              Admin
             </p>
             <p style={{ marginTop: "0", marginBottom: "0" }}>
               <b>Phone: </b>
