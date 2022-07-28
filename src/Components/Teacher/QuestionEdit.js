@@ -355,14 +355,14 @@ export default function () {
                   typeofquestion = String(e.target.value);
                   if (typeofquestion === "Options") {
                     setFlag1(1);
-                  }else if(typeofquestion === "Fill in The Blank") setFlag1(0)
+                  }else if(typeofquestion === "Fill in the Blanks") setFlag1(0)
                 }}
               >
                 {/* <option value="Null">Choose</option>
                 <option value="Single Correct">Single Correct</option>
                 <option value="Multiple Correct">Multiple Correct</option> */}
                 <option value="Options">Options</option>
-                <option value="Fill in The Blank">Fill in The Blank</option>
+                <option value="Fill in the Blanks">Fill in The Blank</option>
               </select>
             </Form.Group>
             <Form.Group

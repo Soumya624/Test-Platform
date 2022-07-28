@@ -424,7 +424,7 @@ export default function () {
 					<Form
 						style={{
 							margin: "2%",
-							display: type === "Fill in The Blank" ? "block" : "none",
+							display: type === "Fill in the Blanks" ? "block" : "none",
 						}}
 					>
 						<input
