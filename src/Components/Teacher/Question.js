@@ -146,11 +146,19 @@ export default function () {
             isError : false,
             message : "Upload Successful"
           });
+
+          setTimeout(()=>{
+            setMsg(null)
+          },3000)
         } else {
           setMsg({
             isError : true,
             message : res.data
           });
+
+          setTimeout(()=>{
+            setMsg(null)
+          },3000)
         }
       })
     );

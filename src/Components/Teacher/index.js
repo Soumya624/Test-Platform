@@ -316,7 +316,7 @@ export default function () {
                   disabled={!isfixed}
                   type="datetime-local"
                   onChange={(e) => {
-                    submitData.exam_start_time = e.target.value;
+                    submitData.exam_end_time = e.target.value;
                     setSubmitData(submitData);
                   }}
                 />

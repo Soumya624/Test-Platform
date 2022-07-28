@@ -139,7 +139,14 @@ export default function () {
     dispatch(
       getTestById(test_id, (res) => {
         if (res.status === 200) {
-          window.location.href = `/answer/${test_id}/${question_id}`;
+          let ex_st = new Date(res.data.exam_start_time)
+          let ex_end = new Date(res.data.exam_end_time)
+          let d_n = new Date()
+          if(res.data.isFixed && ex_st.getTime() <= d_n.getTime() && d_n.getTime() <= ex_end.getTime() ){
+            window.location.href = `/answer/${test_id}/${question_id}`;
+          }    
+          else if(res.data.isFixed == false) window.location.href = `/answer/${test_id}/${question_id}`;
+          else alert("Test has'nt started yet....")
         }
       })
     );
