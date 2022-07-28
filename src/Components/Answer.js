@@ -197,6 +197,7 @@ export default function () {
 			is_attempted: true,
 			subjective_answer: subjective_answer,
 			is_reviewed: false,
+			type: type,
 		};
 
 		console.log(answers);
