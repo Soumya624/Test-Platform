@@ -48,51 +48,97 @@ function Login() {
 
   function submit(e) {
     e.preventDefault();
-    let data = {
-      first_name: first_name,
-      last_name: last_name,
-      email: email,
-      phone_number: phone_number,
-      user_type: "student",
-      city: city,
-      state: state,
-      username: email,
-      discipline: discipline,
-      programme: programme,
-    };
-    console.log(data);
-    axios
+    // let data = {
+    //   first_name: first_name,
+    //   last_name: last_name,
+    //   email: email,
+    //   phone_number: phone_number,
+    //   user_type: "teacher",
+    //   city: city,
+    //   state: state,
+    //   username: email,
+    // };
+    // console.log(data);
+	let dataOne = {
+	      phone: phone_number,
+	    };
+	axios
+	.post("/auth/verify/", dataOne)
+	.then((res) => {
+	console.log(res);
+	console.log(res.data);
+	setShow(true);
+	})
+	.catch((err) => {
+	console.log(err);
+	});
+    // axios
+    //   .post("/auth/register/", data)
+    //   .then((res) => {
+    //     console.log(res);
+    //     console.log(res.data);
+    //     setMsg({
+    //       is_error: false,
+    //       msg: "Success! Please Verify Your Number",
+    //     });
+
+    //     setTimeout(() => {
+    //       setMsg(null);
+    //     }, 1000);
+
+    //     let dataOne = {
+    //       phone: phone_number,
+    //     };
+    //     console.log(dataOne);
+    //     // axios
+    //     //   .post("/auth/verify/", dataOne)
+    //     //   .then((res) => {
+    //     //     console.log(res);
+    //     //     console.log(res.data);
+    //     //     setShow(true);
+    //     //   })
+    //     //   .catch((err) => {
+    //     //     console.log(err);
+    //     //   });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setMsg({
+    //       is_error: true,
+    //       msg: JSON.stringify(err.response.data),
+    //     });
+
+    //     setTimeout(() => {
+    //       setMsg(null);
+    //     }, 1000);
+    //   });
+  }
+
+  async function register_user(){
+	let data = {
+		first_name: first_name,
+		last_name: last_name,
+		email: email,
+		phone_number: phone_number,
+		user_type: "teacher",
+		city: city,
+		state: state,
+		username: email,
+	  };
+	axios
       .post("/auth/register/", data)
       .then((res) => {
         console.log(res);
         console.log(res.data);
         setMsg({
           is_error: false,
-          msg: "Success! Please Verify Your Number",
+          msg: "Success!!",
         });
 
         setTimeout(() => {
-          setMsg(null);
+			window.location = '/login'
+          	setMsg(null);
         }, 1000);
-
-        // setTimeout(()=>{
-        //   window.location = '/login'
-        // })
-
-        let dataOne = {
-          phone: phone_number,
-        };
-        console.log(dataOne);
-        axios
-          .post("/auth/verify/", dataOne)
-          .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            setShow(true);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
       })
       .catch((err) => {
         console.log(err);
@@ -113,12 +159,15 @@ function Login() {
       phone: phone_number,
       otp: otp,
     };
-    console.log(dataTwo);
     axios
       .post("/auth/verify-otp/", dataTwo)
-      .then((res) => {
+      .then(async (res) => {
         console.log(res);
         console.log(res.data);
+		if(res.data.status){
+			console.log("Successfully verified")
+			await register_user()
+		}
         if (res.data.status == false)
           setMsg({
             is_error: !res.data.status,
