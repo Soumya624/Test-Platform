@@ -43,7 +43,8 @@ function Login() {
   const [user_type, setUser_type] = useState(null);
   const [discipline, setDiscipline] = useState(null);
   const [programme, setProgramme] = useState(null);
-  const [ msg, setMsg ] = useState(null)
+  const [msg, setMsg] = useState(null);
+  const [otp, setOtp] = useState(null);
 
   function submit(e) {
     e.preventDefault();
@@ -66,28 +67,77 @@ function Login() {
         console.log(res);
         console.log(res.data);
         setMsg({
-          is_error : false,
-          msg : "Success"
-        })
+          is_error: false,
+          msg: "Success! Please Verify Your Number",
+        });
 
-        setTimeout(()=>{
-          setMsg(null)
-        },1000)
+        setTimeout(() => {
+          setMsg(null);
+        }, 1000);
 
-        setTimeout(()=>{
-          window.location = '/login'
-        })
+        // setTimeout(()=>{
+        //   window.location = '/login'
+        // })
+
+        let dataOne = {
+          phone: phone_number,
+        };
+        console.log(dataOne);
+        axios
+          .post("/auth/verify/", dataOne)
+          .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            setShow(true);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
         setMsg({
-          is_error : true,
-          msg : JSON.stringify(err.response.data)
-        })
+          is_error: true,
+          msg: JSON.stringify(err.response.data),
+        });
 
-        setTimeout(()=>{
-          setMsg(null)
-        },1000)
+        setTimeout(() => {
+          setMsg(null);
+        }, 1000);
+      });
+  }
+
+  function submitOtp(e) {
+    e.preventDefault();
+    let dataTwo = {
+      phone: phone_number,
+      otp: otp,
+    };
+    console.log(dataTwo);
+    axios
+      .post("/auth/verify-otp/", dataTwo)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        if (res.data.status == false)
+          setMsg({
+            is_error: !res.data.status,
+            msg: res.data.detail,
+          });
+        setTimeout(() => {
+          setMsg(null);
+        }, 1000);
+      })
+      .catch((err) => {
+        console.log(err);
+        setMsg({
+          is_error: true,
+          msg: "Error",
+        });
+
+        setTimeout(() => {
+          setMsg(null);
+        }, 1000);
       });
   }
   return (
@@ -267,7 +317,11 @@ function Login() {
               </p>
               <br />
               <center>
-              { msg && <Alert variant={msg.is_error ? "danger" : "success"}>{msg.msg}</Alert>}
+                {msg && (
+                  <Alert variant={msg.is_error ? "danger" : "success"}>
+                    {msg.msg}
+                  </Alert>
+                )}
                 <Button
                   variant="outline-primary"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
@@ -309,16 +363,18 @@ function Login() {
               placeholder="Enter the OTP Sent to Your Mobile Number"
               style={{ borderRadius: "20px" }}
               onChange={(e) => {
-                console.log(e.target.value);
+                e.preventDefault();
+                setOtp(e.target.value);
               }}
             />
           </Form.Group>
           <br />
           <center>
+          { msg && <Alert variant={msg.is_error ? "danger" : "success"}>{msg.msg}</Alert>}
             <Button
               variant="outline-primary"
               style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-              href="/login"
+              onClick={submitOtp}
             >
               Submit
             </Button>
