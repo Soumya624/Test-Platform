@@ -120,10 +120,12 @@ function Login() {
 		last_name: last_name,
 		email: email,
 		phone_number: phone_number,
-		user_type: "teacher",
+		user_type: "student",
 		city: city,
 		state: state,
 		username: email,
+    discipline: discipline,
+    programme: programme,
 	  };
 	axios
       .post("/auth/register/", data)
