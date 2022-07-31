@@ -124,6 +124,8 @@ function Login() {
 		city: city,
 		state: state,
 		username: email,
+    discipline: discipline,
+    programme: programme,
 	  };
 	axios
       .post("/auth/register/", data)
