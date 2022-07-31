@@ -27,6 +27,7 @@ import QuestionEdit from "./Components/Teacher/QuestionEdit";
 import TeacherResult from "./Components/Teacher/result";
 import SignupAdmin from "./Components/SignupAdmin";
 import ProtectedRoute from "./ProtectedRoute";
+import NotFound from "./NotFound";
 function App() {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -44,6 +45,7 @@ function App() {
 		<div>
 			<Router>
 				<Routes>
+					<Route path = "*" element = {<NotFound/>} />
 					<Route path="/" element={<Home />} exact />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
