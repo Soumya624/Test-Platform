@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axiosInstance from './axiosInstance'
 import deleteAllCookies from './deleteCookies'
 import getCookie from './getCookies'
 
@@ -12,7 +12,7 @@ const headers = {
 }
 
 export default function logout(){
-    axios.post('/auth/logout/',{
+    axiosInstance.post('/auth/logout/',{
         refresh
     },{
         headers : headers

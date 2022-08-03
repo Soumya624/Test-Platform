@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import getCookie from "../../getCookies";
 import { ADD_QUESTION, ADD_TEST, GET_QUESTION, GET_TEST, GET_TESTS } from "./types";
 
@@ -12,7 +12,7 @@ const headers = {
 
 export const getTests = (callback) =>{
     return dispatch =>{
-        axios.get('/api/tests/',{
+        axiosInstance.get('/api/tests/',{
             headers : headers
         })
         .then((res)=>{
@@ -26,7 +26,7 @@ export const getTests = (callback) =>{
 
 export const getTestById = (id,callback) =>{
     return dispatch =>{
-        axios.get(`/api/tests/${id}`,{
+        axiosInstance.get(`/api/tests/${id}`,{
             headers : headers
         })
         .then((res)=>{
@@ -47,7 +47,7 @@ export const getTestById = (id,callback) =>{
 
 export const deleteTestById = (id,callback) =>{
     return dispatch =>{
-        axios.delete(`/api/tests/${id}`,{
+        axiosInstance.delete(`/api/tests/${id}`,{
             headers : headers
         })
         .then((res)=>{
@@ -61,7 +61,7 @@ export const deleteTestById = (id,callback) =>{
 
 export const addTest = (data, callback)=>{
     return dispatch =>{
-        axios.post('/api/tests/',data,{
+        axiosInstance.post('/api/tests/',data,{
             headers : headers
         })
         .then((res)=>{
@@ -75,7 +75,7 @@ export const addTest = (data, callback)=>{
 
 export const editTest = (id,data, callback)=>{
     return dispatch =>{
-        axios.patch(`/api/tests/${id}`,data,{
+        axiosInstance.patch(`/api/tests/${id}`,data,{
             headers : headers
         })
         .then((res)=>{
@@ -89,7 +89,7 @@ export const editTest = (id,data, callback)=>{
 
 export const addQuestion = (data, callback)=>{
     return dispatch =>{
-        axios.post('/api/questions/',data,{
+        axiosInstance.post('/api/questions/',data,{
             headers : headers
         })
         .then((res)=>{
@@ -109,7 +109,7 @@ export const addQuestion = (data, callback)=>{
 
 export const editQuestion = (id,data, callback)=>{
     return dispatch =>{
-        axios.patch(`/api/questions/${id}/`,data,{
+        axiosInstance.patch(`/api/questions/${id}/`,data,{
             headers : headers
         })
         .then((res)=>{
@@ -124,7 +124,7 @@ export const editQuestion = (id,data, callback)=>{
 
 export const getQuestionById = (id,callback) =>{
     return dispatch =>{
-        axios.get(`/api/questions/${id}`,{
+        axiosInstance.get(`/api/questions/${id}`,{
             headers : headers
         })
         .then((res)=>{

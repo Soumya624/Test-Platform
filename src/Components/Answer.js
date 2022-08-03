@@ -20,7 +20,7 @@ import {
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import Img_Demo from "./Images/Registration.jpg";
 import { getQuestionById } from "./Teacher/actions";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 import getCookie from "../getCookies";
 import { useCountdownTimer } from "use-countdown-timer";
 
@@ -152,7 +152,7 @@ export default function () {
 	useEffect(() => {
 		setSubjectiveAnswer(null);
 		setAnswers(null);
-		axios
+		axiosInstance
 			.get(`/api/submission/${test_id}/`, {
 				headers: headers,
 			})
@@ -163,7 +163,7 @@ export default function () {
 				}
 			});
 		start();
-		axios
+		axiosInstance
 			.get(`/api/submission/${test_id}/${question_id}`, {
 				headers: headers,
 			})
@@ -203,7 +203,7 @@ export default function () {
 		console.log(answers);
 
 		if (answers) {
-			await axios
+			await axiosInstance
 				.patch(`/api/submission/${test_id}/${question_id}/`, data, {
 					headers: headers,
 				})
@@ -214,7 +214,7 @@ export default function () {
 					}
 				});
 		} else {
-			await axios
+			await axiosInstance
 				.post(`/api/submission/${test_id}/${parseInt(question_id)}/`, data, {
 					headers: headers,
 				})
@@ -226,7 +226,7 @@ export default function () {
 				});
 		}
 
-		axios
+		axiosInstance
 			.get(`/api/submission/${test_id}/`, {
 				headers: headers,
 			})
@@ -249,7 +249,7 @@ export default function () {
 
 		console.log(data);
 
-		axios
+		axiosInstance
 			.post(`/api/attempts/${test_id}/`, data, {
 				headers: headers,
 			})
@@ -270,7 +270,7 @@ export default function () {
 		};
 		console.log(answers);
 		if (answers) {
-			await axios
+			await axiosInstance
 				.patch(`/api/submission/${test_id}/${question_id}/`, data, {
 					headers: headers,
 				})
@@ -281,7 +281,7 @@ export default function () {
 					}
 				});
 		} else {
-			await axios
+			await axiosInstance
 				.post(`/api/submission/${test_id}/${parseInt(question_id)}/`, data, {
 					headers: headers,
 				})
@@ -292,7 +292,7 @@ export default function () {
 				});
 		}
 
-		await axios
+		await axiosInstance
 			.get(`/api/submission/${test_id}/`, {
 				headers: headers,
 			})

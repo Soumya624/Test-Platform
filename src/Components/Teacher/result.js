@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -36,7 +36,7 @@ export default function () {
   const [result, setResult ] = useState([])
 
   useEffect(()=>{
-    axios
+    axiosInstance
       .get(`/api/ranking/${test_id}/`, {
         headers: headers,
       })

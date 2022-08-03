@@ -17,7 +17,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import Img_Registration from "./Images/Registration.png";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 function Login() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -26,7 +26,7 @@ function Login() {
       phone: phone,
     };
     console.log(dataOne);
-    axios
+    axiosInstance
       .post("/auth/verify/", dataOne)
       .then((res) => {
         console.log(res);
@@ -69,7 +69,7 @@ function Login() {
     };
     console.log(dataTwo);
     console.log(dataThree);
-    axios
+    axiosInstance
       .post("/auth/verify-otp/", dataTwo)
       .then((res) => {
         console.log(res);
@@ -99,7 +99,7 @@ function Login() {
         },1000)
       });
 
-    axios
+    axiosInstance
       .post("/auth/login/", dataThree)
       .then((res) => {
         console.log(res);

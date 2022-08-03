@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
@@ -92,7 +92,7 @@ export default function () {
   const [discipline, setDiscipline] = useState(null);
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get("/api/tests/", {
         headers: headers,
       })
@@ -117,7 +117,7 @@ export default function () {
   }
 
   function viewResult(id) {
-    axios
+    axiosInstance
       .get(`/api/result/${id}/`, {
         headers: headers,
       })

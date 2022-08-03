@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -92,7 +92,7 @@ export default function () {
   const [buttonclick, setButtonClick] = useState(false);
 
   function checkAttempts(id) {
-    axios
+    axiosInstance
       .get(`/api/check_attempts/${id}/`, {
         headers: headers,
       })
@@ -106,7 +106,7 @@ export default function () {
       });
   }
   function viewResult(id) {
-    axios
+    axiosInstance
       .get(`/api/result/${id}/`, {
         headers: headers,
       })
@@ -124,7 +124,7 @@ export default function () {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get("/api/tests_students/", {
         headers: headers,
       })
