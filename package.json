@@ -2,7 +2,7 @@
   "name": "testplatform",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:8000/",
+  "proxy": "https://salty-savannah-75623.herokuapp.com/",
   "engines": {
     "node": "16.15.0"
   },
